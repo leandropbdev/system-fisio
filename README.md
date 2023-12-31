@@ -1,7 +1,7 @@
-<h1 align="center">DevLinks </h1>
+<h1 align="center">System Fisio </h1>
 
 <p align="center">
-Programa exclusivo e gratuito, promovido pela Rocketseat para ensino de tecnologias WEB.
+Sistema desenvolvido para uma melhor organização de clientes e agendamento de pacientes.
 </p>
 
 <p align="center">
