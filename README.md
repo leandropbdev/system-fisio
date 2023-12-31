@@ -35,7 +35,7 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
 
 ## 💻 Projeto
 
-O System Fisio é um sistema para cadastros, gestão e emisão de relatorios de clientes de fisioterapia 
+O System Fisio é um sistema para cadastros, agendamentos, gestão e emisão de relatorios de clientes de fisioterapia 
 
 ## :memo: Licença
 
