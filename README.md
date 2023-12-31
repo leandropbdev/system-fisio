@@ -18,7 +18,7 @@ Programa exclusivo e gratuito, promovido pela Rocketseat para ensino de tecnolog
 <br>
 
 <p align="center">
-  <img alt="Projeto devlinks" src=".github/preview.jpg" width="100%">
+  <img alt="Projeto System Fisio" src=".github/preview.jpg" width="100%">
 </p>
 
 ## 🚀 Tecnologias
@@ -27,16 +27,15 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
 
 - HTML e CSS
 - JavaScript
+- PHP
+- Mysql 
+- Bootstrap
 - Git e Github
-- Figma
+
 
 ## 💻 Projeto
 
-O devLinks é um agregador de links para usar como cartão de visitas online.
-
-## 🔖 Layout
-
-Você pode visualizar o layout do projeto através [DESSE LINK](https://www.figma.com/file/J1Z33MISC22YZB8wfxiIns/NLW-Copa-Explorer/duplicate). É necessário ter conta no [Figma](https://figma.com) para acessá-lo.
+O System Fisio é um sistema para cadastros, gestão e emisão de relatorios de clientes de fisioterapia 
 
 ## :memo: Licença
 
@@ -44,4 +43,4 @@ Esse projeto está sob a licença MIT.
 
 ---
 
-Feito com ♥ by Rocketseat :wave: [Participe da nossa comunidade!](https://discord.gg/rocketseat)
+Feito por leandro developer ♥ 
