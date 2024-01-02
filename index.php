@@ -546,9 +546,9 @@ switch ($mes) {
 															<tr style="background:blue; height:5px;">
 																<th style="width: 10px; "></th>
 																<td style=" background:#ddd; height:5px;">Ortopedico </td>
-																<td style=" background:#ddd;">Neoro</td>
+																<td style=" background:#ddd;">Neuro</td>
 																<td style=" background:#ddd;">Ortopedico</td>
-																<td style=" background:#ddd;">Neoro</td>
+																<td style=" background:#ddd;">Neuro</td>
 																<td style=" background:#ddd;">Ortopedico</td>
 															</tr>
 														</thead>
