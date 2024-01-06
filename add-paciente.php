@@ -426,6 +426,17 @@ include_once('./db/db-conection.php');
 												</div>
 
 
+
+												<hr>
+												<div class="row mb-3">
+													<div class="col-lg-12 col-md-12 col-sm-12 col-12">
+														<h4 class="card card-title p-2">Avaliação do paciente:</h4>
+													</div>
+												</div>
+
+
+
+
 												<div class="row">
 													<div class="col-lg-8 col-md-6 col-sm-6 col-8">
 														<div class="form-group">
@@ -456,12 +467,7 @@ include_once('./db/db-conection.php');
 													</div>
 												</div>
 
-												<hr>
-												<div class="row mb-3">
-													<div class="col-lg-12 col-md-12 col-sm-12 col-12">
-														<h4 class="card card-title p-2">Avaliação do paciente:</h4>
-													</div>
-												</div>
+
 
 												<div class="row">
 													<div class="col-lg-4 col-md-6 col-sm-6 col-12">

@@ -52,7 +52,7 @@ $eva_paciente = isset($dados['eva_paciente']) ? $dados['eva_paciente'] : null;
 // ==== CADASTRAR PACIENTES ======
 
 $queryInsertPaciente = "INSERT INTO pacientes values(default,'$nomepaciente','$sexoPaciente','$cpfPaciente','$dataNascPaciente','$telefonePaciente',
-'$enderecoPaciente','$bairroPaciente','$profissaoPaciente','$susPaciente','$etniaPaciente','$diagMedPaciente','$cidPaciente','$diagFisioPaciente', NOW(),'')";
+'$enderecoPaciente','$bairroPaciente','$profissaoPaciente','$susPaciente','$etniaPaciente', NOW(),'')";
 
 $queryResultPaciente = $mysqli->query($queryInsertPaciente);
 if (mysqli_affected_rows($mysqli) > 0) {
@@ -79,7 +79,7 @@ if (mysqli_affected_rows($mysqli) > 0) {
 
     //FAZ PARTE DA AVALIAÇÃO =======
 
-    $querynsertAvaliacao = "INSERT INTO avaliacao_paciente values(default,'$codPaciente','$fisio','$queixa_paciente','$hma_paciente','$trata_realizado_paciente','$desc_exame_paciente','$desc_medicamento_paciente','$desc_cirurgia_paciente','$eva_paciente',NOW(), '')";
+    $querynsertAvaliacao = "INSERT INTO avaliacao_paciente values(default,'$codPaciente','$fisio','$diagMedPaciente','$cidPaciente','$diagFisioPaciente','$queixa_paciente','$hma_paciente','$trata_realizado_paciente','$desc_exame_paciente','$desc_medicamento_paciente','$desc_cirurgia_paciente','$eva_paciente',NOW(), '')";
     $queryResultAv = $mysqli->query($querynsertAvaliacao);
 
     if (mysqli_affected_rows($mysqli) > 0) {

@@ -304,7 +304,7 @@ include_once('./db/db-conection.php');
 
 						<div class="col-sm-6 col-md-3">
 							<a href="#" class="btn btn-search rounded btn-block mb-3">
-								search
+								Pesquisar
 							</a>
 						</div>
 					</div>
@@ -347,10 +347,26 @@ include_once('./db/db-conection.php');
 
 												$dataNacPaciente = $row_cont_paciente['data_nasc_paciente'];
 
+												// * CODIGO PARA PEGAR A DATA DO PACIENTE 
 												$dataNascimento = $dataNacPaciente;
 												$date = new DateTime($dataNascimento);
 												$interval = $date->diff(new DateTime(date('Y-m-d')));
 												$idadePaciente =  $interval->format('%Y');
+
+
+												// * Condição para saber se o paciente recebeu alta
+
+												// $queryPaciente = "SELECT status FROM agendamento_paciente where ordem_paciente = '$codPaciente' ORDER BY cod_agendamento desc limit 1 ";
+												// $queryResult = $mysqli->query($queryPaciente);
+												// $row_cont = mysqli_fetch_array($queryResult);
+												// $status = $row_cont['status'] ?? "";
+
+												// if ($status == "" or $status == '1') {
+
+												// 	// echo "sim";													
+
+
+
 
 
 
@@ -382,8 +398,8 @@ include_once('./db/db-conection.php');
 														}  ?></td>
 													<td>
 														<?php
-														//========= BUSCAR OS TIPO DE RESCURSO DO TRATAMENTO O PACIENTE TEM ===
-														$querySelRecurso = "SELECT rt.nome_recurso from tipo_recurso_tratamento trt join recurso_tratamento rt on trt.ordem_recurso = rt.cod_recurso WHERE ordem_avaliacao = '$codAvaliacao'";
+														//*========= BUSCAR OS TIPO DE RESCURSO DO TRATAMENTO O PACIENTE TEM ===
+														$querySelRecurso = "SELECT rt.nome_recurso, trt.cod_tipo_recurso  from tipo_recurso_tratamento trt join recurso_tratamento rt on trt.ordem_recurso = rt.cod_recurso WHERE ordem_avaliacao = '$codAvaliacao'  ORDER BY trt.cod_tipo_recurso desc limit 1 ";
 														$queryResulRecurso = $mysqli->query($querySelRecurso);
 														while ($row_cont_recurso = mysqli_fetch_array($queryResulRecurso)) {
 															$nomeRecurso = $row_cont_recurso['nome_recurso'];
@@ -398,26 +414,25 @@ include_once('./db/db-conection.php');
 
 
 													<?php
-													// ===== BUSCAR SE O PACIENTE ESTA AGENDANDO OU NÃO =--=======
+													//* ===== BUSCAR SE O PACIENTE ESTA AGENDANDO OU NÃO =--=======
 
-													$query_paciente_age = "SELECT ordem_paciente, status from agendamento_paciente where ordem_paciente = '$codPaciente' ";
+													$query_paciente_age = "SELECT ordem_paciente, status from agendamento_paciente where ordem_paciente = '$codPaciente' ORDER BY cod_agendamento desc limit 1 ";
 													$result = $mysqli->query($query_paciente_age);
 													$row_cont_recurso = mysqli_fetch_array($result);
-													$status = isset($row_cont_recurso['status'])? $row_cont_recurso['status']:null;
+													$status = isset($row_cont_recurso['status']) ? $row_cont_recurso['status'] : null;
 
 													if (mysqli_affected_rows($mysqli) > 0) {
 
-														if($status == '1'){
+														if ($status == '1') {
 															$agendado = "Agendado";
 															$status = "badge-success-border";
-														}else if($status == '2'){
+														} else if ($status == '2') {
 															$agendado = "Recebeu alta";
 															$status = "badge-info-border";
-														}else if($status == '3'){
+														} else if ($status == '3') {
 															$agendado = "Desativado";
 															$status = "badge-danger-border";
 														}
-														
 													} else {
 														$agendado = "Não Agendado";
 														$status = "badge badge-warning-border";
@@ -451,7 +466,9 @@ include_once('./db/db-conection.php');
 
 												</tr>
 
-											<?php    }
+											<?php
+											}
+											// }
 										} else { ?>
 
 											<tr>

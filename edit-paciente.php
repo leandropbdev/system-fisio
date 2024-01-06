@@ -577,6 +577,15 @@ include_once('./db/db-conection.php');
 
 
 
+									
+
+												<hr>
+												<div class="row mb-3">
+													<div class="col-lg-12 col-md-12 col-sm-12 col-12">
+														<h4 class="card card-title p-2">Avaliação do paciente:</h4>
+													</div>
+												</div>
+
 												<div class="row">
 													<div class="col-lg-8 col-md-6 col-sm-6 col-8">
 														<div class="form-group">
@@ -604,13 +613,6 @@ include_once('./db/db-conection.php');
 															<textarea class="form-control" rows="2" name="diag_fisio_paciente"><?php echo $diagFisioPaciente; ?></textarea>
 														</div>
 
-													</div>
-												</div>
-
-												<hr>
-												<div class="row mb-3">
-													<div class="col-lg-12 col-md-12 col-sm-12 col-12">
-														<h4 class="card card-title p-2">Avaliação do paciente:</h4>
 													</div>
 												</div>
 

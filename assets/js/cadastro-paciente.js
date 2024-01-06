@@ -1,5 +1,5 @@
 
-// FUNÇÕES PARA VALIDAR AÇÃO DO BOTAO SE O PACIENTE TEM OU NÃO EXAMES, HABILITAR E DESABILITAR O CAMPO DECRICAO COM O CKECKBOX ==
+//* FUNÇÕES PARA VALIDAR AÇÃO DO BOTAO SE O PACIENTE TEM OU NÃO EXAMES, HABILITAR E DESABILITAR O CAMPO DECRICAO COM O CKECKBOX ==
 let exameSim = document.querySelector("#exameSim");
 let exameNao = document.querySelector("#exameNao");
 let desc_exame = document.querySelector("#desc_exame");
@@ -72,14 +72,14 @@ function ciruNao() {
 
 
 
-//----=== VALIDAÇÃO DOS CAMPOS OBRIGATORIOS ------
+//*----=== Pegando a ação do botão cadastrar ------
 
 $(document).ready(function () {
     $("#btn_cadstro").click(function (e) {
-        // alert("Ola mundo");
+        //  alert("Ola mundo");
 
 
-
+//*----=== VALIDAÇÃO DOS CAMPOS OBRIGATORIOS ------
         var msg = "";
         let fisio = $("#fisio").val();
         let nome_paciente = $("#nome_paciente").val();
@@ -149,7 +149,7 @@ $(document).ready(function () {
         } else {
 
 
-            //====== SCRIPT PARA MANDA OS DADOS PARA A PAGE CADASTRO =====
+            //*====== SCRIPT PARA MANDA OS DADOS PARA A PAGE CADASTRO =====
 
             // alert("Ola")
             var form = document.querySelector("#form");

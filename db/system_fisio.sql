@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 23/12/2023 às 02:25
--- Versão do servidor: 10.4.28-MariaDB
--- Versão do PHP: 8.2.4
+-- Tempo de geração: 04/01/2024 às 03:49
+-- Versão do servidor: 10.4.32-MariaDB
+-- Versão do PHP: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -40,16 +40,6 @@ CREATE TABLE `agendamento_paciente` (
   `data_update_agendamento` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Despejando dados para a tabela `agendamento_paciente`
---
-
-INSERT INTO `agendamento_paciente` (`cod_agendamento`, `ordem_paciente`, `ordem_profissional_agendamento`, `ordem_recurso_tratamento`, `horario_inicio`, `horario_final`, `status`, `observacao`, `data_cad_agendamento`, `data_update_agendamento`) VALUES
-(110, 87, 1, 3, '08:00:00', '09:00:00', 2, '', '2023-12-06', '0000-00-00'),
-(111, 87, 1, 2, '09:00:00', '10:00:00', 1, '', '2023-12-06', '0000-00-00'),
-(112, 88, 2, 1, '08:00:00', '08:30:00', 1, '', '2023-12-06', '0000-00-00'),
-(113, 90, 4, 4, '10:00:00', '10:30:00', 3, '', '2023-12-06', '0000-00-00');
-
 -- --------------------------------------------------------
 
 --
@@ -64,17 +54,6 @@ CREATE TABLE `atendimento_paciente` (
   `data_atendimento` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Despejando dados para a tabela `atendimento_paciente`
---
-
-INSERT INTO `atendimento_paciente` (`cod_atendimento`, `ordem_dias_semana`, `frequencia`, `observacao_atendimento`, `data_atendimento`) VALUES
-(92, 341, '1', '', '2023-12-06'),
-(93, 341, '1', '', '2023-12-06'),
-(94, 344, '1', '', '2023-12-06'),
-(95, 349, '0', '', '2023-12-06'),
-(96, 347, '0', '', '2023-12-06');
-
 -- --------------------------------------------------------
 
 --
@@ -87,13 +66,6 @@ CREATE TABLE `avaliacao_atendimento` (
   `avaliacao_atendimento` varchar(20) NOT NULL,
   `data_av_atendimento` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Despejando dados para a tabela `avaliacao_atendimento`
---
-
-INSERT INTO `avaliacao_atendimento` (`cod_av_atendimento`, `ordem_paciente_av_atendimento`, `avaliacao_atendimento`, `data_av_atendimento`) VALUES
-(5, 87, 'não declara', '2023-12-06');
 
 -- --------------------------------------------------------
 
@@ -121,10 +93,7 @@ CREATE TABLE `avaliacao_paciente` (
 --
 
 INSERT INTO `avaliacao_paciente` (`cod_avaliacao`, `ordem_paciente`, `ordem_profissional`, `qp_paciente`, `hma_paciente`, `tratamento_realizado`, `exames`, `medicamentos`, `cirurgia`, `eva_paciente`, `data_cad_avaliacao`, `data_atualizacao_av`) VALUES
-(81, 87, 1, '', '', '', '', '', '', 5, '2023-12-06', '0000-00-00'),
-(82, 88, 2, '', ' ', '', '', '', '', 7, '2023-12-06', '2023-12-06'),
-(83, 89, 3, '', '', '', '', '', '', 4, '2023-12-06', '0000-00-00'),
-(84, 90, 4, '', '', '', '', '', '', 0, '2023-12-06', '0000-00-00');
+(88, 94, 1, '', '', '', '', '', '', 0, '2024-01-02', '0000-00-00');
 
 -- --------------------------------------------------------
 
@@ -210,22 +179,6 @@ CREATE TABLE `dias_semana_paciente` (
   `ordem_cod_dias_semana` int(11) DEFAULT NULL,
   `data_cad_dias_sem_paciente` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Despejando dados para a tabela `dias_semana_paciente`
---
-
-INSERT INTO `dias_semana_paciente` (`cod_dias_sem_paciente`, `ordem_agendamento`, `ordem_cod_dias_semana`, `data_cad_dias_sem_paciente`) VALUES
-(341, 110, 1, '2023-12-06'),
-(342, 110, 3, '2023-12-06'),
-(343, 110, 5, '2023-12-06'),
-(344, 111, 1, '2023-12-06'),
-(345, 111, 3, '2023-12-06'),
-(346, 111, 5, '2023-12-06'),
-(347, 112, 2, '2023-12-06'),
-(348, 112, 4, '2023-12-06'),
-(349, 113, 1, '2023-12-06'),
-(350, 113, 3, '2023-12-06');
 
 -- --------------------------------------------------------
 
@@ -356,10 +309,7 @@ CREATE TABLE `pacientes` (
 --
 
 INSERT INTO `pacientes` (`cod_paciente`, `nome_paciente`, `sexo_paciente`, `cpf_paciente`, `data_nasc_paciente`, `telefone_paciente`, `rua_paciente`, `bairro_paciente`, `profissao_paciente`, `sus_paciente`, `etnia_paciente`, `diag_medico_paciente`, `cid_paciente`, `diag_fisio_paciente`, `data_cad_paciente`, `data_atualizacao`) VALUES
-(87, 'Leandro Braga', 'M', '700.091.912-40', '1996-01-12', '(97) 98423-2486', 'Antonio Medeiros, 83', 'Vila Falcão', 'Analista de Sistema', 3334478888, '', ' ', '', '', '2023-12-06', '0000-00-00'),
-(88, 'Ana Clara de Souza', 'F', '', '2005-09-12', '', 'Beo da Rosa, 2376', 'Bairro da Fonte', '', 4294967295, '', '', '', '', '2023-12-06', '2023-12-06'),
-(89, 'Maria José', 'F', '', '1970-10-20', '', '', '', '', 0, '', ' ', '', '', '2023-12-06', '0000-00-00'),
-(90, 'Matheus Franga', 'M', '899.993.939-39', '1981-07-16', NULL, 'Beco da Rosa, 2376', 'N.Sra. de Fatima', NULL, 0, NULL, NULL, NULL, NULL, '2023-12-06', NULL);
+(94, 'Leandro Braga', 'M', '899.993.939-39', '1996-06-12', '(97) 98432-4535', 'Antonio Medeiros 83', 'Bairro da Fonte', 'Agricultor', 3334478888, 'Banawá Yafi', ' ', '', '', '2024-01-02', '0000-00-00');
 
 -- --------------------------------------------------------
 
@@ -447,15 +397,6 @@ CREATE TABLE `tipo_classificacao_paciente` (
   `data_cad_tipo_classificacao` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Despejando dados para a tabela `tipo_classificacao_paciente`
---
-
-INSERT INTO `tipo_classificacao_paciente` (`cod_tipo_classificacao`, `ordem_avaliacao`, `ordem_classificacao`, `data_cad_tipo_classificacao`) VALUES
-(43, 81, 2, '2023-12-06'),
-(44, 83, 3, '2023-12-06'),
-(45, 82, 4, '2023-12-06');
-
 -- --------------------------------------------------------
 
 --
@@ -468,13 +409,6 @@ CREATE TABLE `tipo_estado_paciente` (
   `ordem_estado` int(11) DEFAULT NULL,
   `data_cad_situacao` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
---
--- Despejando dados para a tabela `tipo_estado_paciente`
---
-
-INSERT INTO `tipo_estado_paciente` (`cod_situacao`, `ordem_avaliacao`, `ordem_estado`, `data_cad_situacao`) VALUES
-(62, 81, 5, '2023-12-06');
 
 -- --------------------------------------------------------
 
@@ -502,17 +436,6 @@ CREATE TABLE `tipo_recurso_tratamento` (
   `data_cad_tipo_recurso` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
---
--- Despejando dados para a tabela `tipo_recurso_tratamento`
---
-
-INSERT INTO `tipo_recurso_tratamento` (`cod_tipo_recurso`, `ordem_avaliacao`, `ordem_recurso`, `data_cad_tipo_recurso`) VALUES
-(190, 81, 3, '2023-12-06'),
-(191, 81, 2, '2023-12-06'),
-(193, 83, 2, '2023-12-06'),
-(194, 84, 4, '2023-12-06'),
-(195, 82, 1, '2023-12-06');
-
 -- --------------------------------------------------------
 
 --
@@ -526,14 +449,6 @@ CREATE TABLE `tipo_situacao_paciente` (
   `data` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
---
--- Despejando dados para a tabela `tipo_situacao_paciente`
---
-
-INSERT INTO `tipo_situacao_paciente` (`cod_tipo_situacao`, `ordem_situacao`, `ordem_paciente`, `data`) VALUES
-(210, 7, 87, '2023-12-06'),
-(211, 3, 89, '2023-12-06');
-
 -- --------------------------------------------------------
 
 --
@@ -546,14 +461,6 @@ CREATE TABLE `tipo_tratamento_paciente` (
   `ordem_tratamento` int(11) DEFAULT NULL,
   `data_cad_tipo_tratamento` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
---
--- Despejando dados para a tabela `tipo_tratamento_paciente`
---
-
-INSERT INTO `tipo_tratamento_paciente` (`cod_tipo_tratamento`, `ordem_avaliacao`, `ordem_tratamento`, `data_cad_tipo_tratamento`) VALUES
-(91, 81, 3, '2023-12-06'),
-(92, 83, 3, '2023-12-06');
 
 -- --------------------------------------------------------
 
@@ -789,25 +696,25 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de tabela `agendamento_paciente`
 --
 ALTER TABLE `agendamento_paciente`
-  MODIFY `cod_agendamento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=114;
+  MODIFY `cod_agendamento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=118;
 
 --
 -- AUTO_INCREMENT de tabela `atendimento_paciente`
 --
 ALTER TABLE `atendimento_paciente`
-  MODIFY `cod_atendimento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
+  MODIFY `cod_atendimento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=100;
 
 --
 -- AUTO_INCREMENT de tabela `avaliacao_atendimento`
 --
 ALTER TABLE `avaliacao_atendimento`
-  MODIFY `cod_av_atendimento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `cod_av_atendimento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de tabela `avaliacao_paciente`
 --
 ALTER TABLE `avaliacao_paciente`
-  MODIFY `cod_avaliacao` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
+  MODIFY `cod_avaliacao` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
 
 --
 -- AUTO_INCREMENT de tabela `bairros`
@@ -831,7 +738,7 @@ ALTER TABLE `dias_semana`
 -- AUTO_INCREMENT de tabela `dias_semana_paciente`
 --
 ALTER TABLE `dias_semana_paciente`
-  MODIFY `cod_dias_sem_paciente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=351;
+  MODIFY `cod_dias_sem_paciente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=362;
 
 --
 -- AUTO_INCREMENT de tabela `estado_paciente`
@@ -849,7 +756,7 @@ ALTER TABLE `etnia`
 -- AUTO_INCREMENT de tabela `evolucao_paciente`
 --
 ALTER TABLE `evolucao_paciente`
-  MODIFY `cod_evolucao` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `cod_evolucao` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de tabela `inspecao`
@@ -861,7 +768,7 @@ ALTER TABLE `inspecao`
 -- AUTO_INCREMENT de tabela `pacientes`
 --
 ALTER TABLE `pacientes`
-  MODIFY `cod_paciente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=91;
+  MODIFY `cod_paciente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=95;
 
 --
 -- AUTO_INCREMENT de tabela `profissionais`
@@ -885,7 +792,7 @@ ALTER TABLE `situacao_paciente`
 -- AUTO_INCREMENT de tabela `tipo_classificacao_paciente`
 --
 ALTER TABLE `tipo_classificacao_paciente`
-  MODIFY `cod_tipo_classificacao` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `cod_tipo_classificacao` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
 -- AUTO_INCREMENT de tabela `tipo_estado_paciente`
@@ -903,19 +810,19 @@ ALTER TABLE `tipo_inspecao`
 -- AUTO_INCREMENT de tabela `tipo_recurso_tratamento`
 --
 ALTER TABLE `tipo_recurso_tratamento`
-  MODIFY `cod_tipo_recurso` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=196;
+  MODIFY `cod_tipo_recurso` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=210;
 
 --
 -- AUTO_INCREMENT de tabela `tipo_situacao_paciente`
 --
 ALTER TABLE `tipo_situacao_paciente`
-  MODIFY `cod_tipo_situacao` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=212;
+  MODIFY `cod_tipo_situacao` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=213;
 
 --
 -- AUTO_INCREMENT de tabela `tipo_tratamento_paciente`
 --
 ALTER TABLE `tipo_tratamento_paciente`
-  MODIFY `cod_tipo_tratamento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=93;
+  MODIFY `cod_tipo_tratamento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=94;
 
 --
 -- AUTO_INCREMENT de tabela `tratamento_paciente`
