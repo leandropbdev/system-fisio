@@ -44,7 +44,7 @@ include_once('./db/db-conection.php');
 
 	<div class="main-wrapper">
 
-		<div class="header-outer">
+		<div class="header-outer ">
 			<div class="header">
 				<a id="mobile_btn" class="mobile_btn float-left" href="#sidebar"><i class="fas fa-bars" aria-hidden="true"></i></a>
 				<a id="toggle_btn" class="float-left" href="javascript:void(0);">
@@ -57,10 +57,10 @@ include_once('./db/db-conection.php');
 							<a href="javascript:void(0);" class="responsive-search">
 								<i class="fa fa-search"></i>
 							</a>
-							<form action="search.html">
+							<!-- <form action="search.html">
 								<input class="form-control" type="text" placeholder="Search here">
 								<button class="btn" type="submit"><i class="fa fa-search"></i></button>
-							</form>
+							</form> -->
 						</div>
 					</li>
 					<li>
@@ -173,6 +173,7 @@ include_once('./db/db-conection.php');
 		</div>
 
 
+		<!-- === MENU PRINCIPAL  === -->
 		<div class="sidebar" id="sidebar">
 			<div class="sidebar-inner slimscroll">
 				<div id="sidebar-menu" class="sidebar-menu">
@@ -182,7 +183,7 @@ include_once('./db/db-conection.php');
 							<span class="text-success" style="font-family: sans-serif pridi regular;">System Fisio</span>
 						</a>
 					</div>
-					<ul class="sidebar-ul">
+					<ul class="sidebar-ul ">
 						<li class="menu-title">Menu</li>
 						<li>
 							<a href="index.php"><img src="assets/img/sidebar/icon-6.png" alt="icon"><span>Agenda</span></a>
@@ -245,7 +246,7 @@ include_once('./db/db-conection.php');
 					<div class="col-sm-8 col-12 text-right add-btn-col">
 						<a href="add-paciente.php" class="btn btn-primary btn-rounded float-right"><i class="fas fa-plus"></i> Adicionar Paciente</a>
 						<div class="view-icons">
-							<a href="arquivados-desativados.php" class="grid-view btn btn-link"> <i class="fas fa-box"></i> Arquivados/Desativados</a>
+							<!-- <a href="arquivados-desativados.php" class="grid-view btn btn-link"> <i class="fas fa-box"></i> Arquivados/Desativados</a> -->
 							<!-- <a href="all-pacientes.php" class="grid-view btn btn-link"><i class="fas fa-th"></i></a> -->
 							<a href="all-pacientes.php" class="list-view btn btn-link active"><i class="fas fa-bars"></i></a>
 						</div>

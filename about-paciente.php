@@ -189,10 +189,10 @@ include_once('./db/db-conection.php');
 					</div>
 					<ul class="sidebar-ul">
 						<li class="menu-title">Menu</li>
-						<li >
+						<li>
 							<a href="index.php"><img src="assets/img/sidebar/icon-6.png" alt="icon"><span>Agenda</span></a>
 						</li>
-						<li class="submenu" >
+						<li class="submenu">
 							<a href="#" class="active"><img src="assets/img/sidebar/icon-2.png" alt="icon"> <span> Pacientes</span><span class="menu-arrow"></span></a>
 							<ul class="list-unstyled" style="display: none;">
 								<li><a href="all-pacientes.php"><span>Todos os Pacientes</span></a></li>
@@ -280,7 +280,7 @@ include_once('./db/db-conection.php');
 
 						$date = new DateTime($dataNascPacienteBd);
 						$interval = $date->diff(new DateTime(date('Y-m-d')));
-						$idadePaciente =  $interval->format('%Y');						
+						$idadePaciente =  $interval->format('%Y');
 
 
 
@@ -302,9 +302,6 @@ include_once('./db/db-conection.php');
 						$dataCadPaciente = $dataCadPaciente->format("m/Y");
 
 						$codAvaliacao = $row_cont_paciente['cod_avaliacao'];
-
-					
-						
 					}
 				}
 
@@ -556,8 +553,83 @@ include_once('./db/db-conection.php');
 													<div class="card">
 
 														<div class="card-header">
-															<h4 class="page-title">Prontuario do paciente</h4>
+
+															<span class="page-title">Avaliações do paciente</span>
+															<a href="#" class="btn btn-primary btn-rounded float-right" data-toggle="modal" data-target="#add_new_event"><i class="fas fa-plus"></i> Nova avaliação</a>
+
 														</div>
+
+														<div class="row">
+															<div class="col-md-12">
+
+																<div class="card-body">
+																	<ul class="nav nav-tabs">
+
+																		<?php
+																		//* === BUSCA TODAS AS AVALIAÇÕES DO PACIENTE == -->
+																		$contAv = 1;
+																		$queryAv = "SELECT * FROM  avaliacao_paciente where ordem_paciente = '$codPaciente'";
+																		$result_queryAv = $mysqli->query($queryAv);
+																		while ($row_cont_avaliacao = mysqli_fetch_array($result_queryAv)) {
+
+																			$codAv = $row_cont_avaliacao['cod_avaliacao'];
+
+																			// ? Ativar somente a primeira tabs 
+																			if ($contAv == 1) {
+																				$active = 'active';
+																			} else {
+																				$active = '';
+																			}
+
+																		?>
+
+																			<li class="nav-item"><a class="nav-link <?= $active ?>" href="#av<?= $codAv; ?>" data-toggle="tab"> Av <?= $contAv; ?></a></li>
+
+																		<?php $contAv++;
+																		} ?>
+																		<!-- <li class="nav-item"><a class="nav-link" href="#av02" data-toggle="tab">Av 02</a></li>
+																		<li class="nav-item"><a class="nav-link" href="#basictab3" data-toggle="tab">Av 03</a></li> -->
+																	</ul>
+																	<div class="tab-content">
+
+
+																		<?php
+																		//* === BUSCA TODAS AS AVALIAÇÕES DO PACIENTE == -->
+																		$contAv = 1;
+																		$queryAv = "SELECT * FROM  avaliacao_paciente where ordem_paciente = '$codPaciente'";
+																		$result_queryAv = $mysqli->query($queryAv);
+																		while ($row_cont_avaliacao = mysqli_fetch_array($result_queryAv)) {
+
+																			$codAv = $row_cont_avaliacao['cod_avaliacao'];
+																			// ? Ativar somente a primeira tabs 
+																			if ($contAv == 1) {
+																				$active = 'active';
+																			} else {
+																				$active = '';
+																			}
+
+
+																		?>
+																			<div class="tab-pane show <?= $active; ?>" id="av<?= $codAv ?>">
+																				Avaliação <?= $codAv ?>
+																			</div>
+
+																		<?php $contAv++;
+																		} ?>
+
+																		<!-- <div class="tab-pane" id="av02">
+																			Avaliação 02
+																		</div>
+																		<div class="tab-pane" id="basictab3">
+																			Avaliação 3
+																		</div> -->
+																	</div>
+																</div>
+
+															</div>
+														</div>
+
+
 
 														<div class="card-body">
 															<div id="biography" class="biography">
@@ -595,7 +667,7 @@ include_once('./db/db-conection.php');
 
 
 																</div>
-																<h4>Classificação  </h4>
+																<h4>Classificação </h4>
 																<hr>
 																<ul class="list-unstyled ">
 																	<?php
@@ -953,6 +1025,8 @@ include_once('./db/db-conection.php');
 
 	<script src="assets/js/bootstrap.bundle.min.js"></script>
 
+	<script src="assets/js/dataTables.bootstrap4.min.js"></script>
+
 	<script src="assets/js/jquery.slimscroll.js"></script>
 
 	<script src="assets/js/select2.min.js"></script>
@@ -962,6 +1036,176 @@ include_once('./db/db-conection.php');
 
 	<!-- SCRIPT PARA O PRELOAD DA PAGINA -->
 	<script src="assets/js/script-preload.js"></script>
+
+		<!-- SCRIPT PARA CASDATRO DO PACIENTE E VALIDAÇÃO DO FORMULARIO -->
+		<script src="assets/js/cadastro-paciente.js"></script>
+
+
+
+	<!-- MODAL PARA CADASTRAR UMA NOVA AVALIAÇÃO -->
+	<div class="modal custom-modal fade" id="add_new_event">
+		<div class="modal-dialog modal-dialog-centered modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Nova avaliação</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				</div>
+				<div class="modal-body">
+					<form>
+						<div class="row">
+							<div class="col-lg-5 col-md-6 col-sm-6 col-8">
+								<div class="form-group">
+									<label>Diagnóstico Médico:</label>
+									<textarea class="form-control" rows="2" name="diag_medico_paciente"> </textarea>
+								</div>
+
+							</div>
+
+							<div class="col-lg-3 col-md-6 col-sm-6 col-4">
+								<div class="form-group">
+									<label>cid:</label>
+									<input type="text" class="form-control" name="cid_paciente">
+								</div>
+
+							</div>
+							<div class="col-lg-4 col-md-6 col-sm-6 col-12">
+								<div class="form-group">
+									<label>Diagnóstico Fisioterapêutico:</label>
+									<textarea class="form-control" rows="2" name="diag_fisio_paciente"></textarea>
+								</div>
+
+							</div>
+
+						</div>
+
+						<div class="row">
+							<div class="col-lg-4 col-md-6 col-sm-6 col-12">
+								<div class="form-group">
+									<label>Queixa do Paciente :</label>
+									<textarea class="form-control" rows="1" name="queixa_paciente"></textarea>
+								</div>
+
+							</div>
+							<div class="col-lg-4 col-md-6 col-sm-6 col-12">
+								<div class="form-group">
+									<label>HMA :</label>
+									<textarea class="form-control" rows="1" name="hma_paciente"></textarea>
+								</div>
+
+							</div>
+							<div class="col-lg-4 col-md-6 col-sm-6 col-12">
+								<div class="form-group">
+									<label>Tratamento Realizado :</label>
+									<textarea class="form-control" rows="1" name="trata_realizado_paciente"></textarea>
+								</div>
+
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-lg-12 col-md-6 col-sm-6 col-12">
+								<label>Estado do Paciente:</label>
+								<div class="form-group">
+									<?php
+									$querySelecEstadoP = "SELECT * FROM estado_paciente";
+									$result_estadoP = mysqli_query($mysqli, $querySelecEstadoP);
+
+									while ($row_result_estadoP = mysqli_fetch_array($result_estadoP)) {
+
+										$nomeEstado = $row_result_estadoP['nome_estado'];
+										$codEstado = $row_result_estadoP['cod_estado'];
+
+									?>
+										<div class="form-check form-check-inline" style="margin-left: 10px;">
+											<input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="<?php echo $codEstado; ?>" name="estado_paciente[]">
+											<label class="form-check-label" for="inlineCheckbox1 "><?php echo $nomeEstado; ?> </label>
+										</div>
+
+
+									<?php     }    ?>
+
+								</div>
+
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-lg-2 col-md-6 col-sm-6 col-12">
+								<label style="font-weight: bold;">Exames :</label>
+								<div class="form-group">
+									<div class="form-check form-check-inline" style="margin-left: 10px;">
+										<input class="form-check-input" type="checkbox" id="exameSim" onclick="exmeSim()">
+										<label class="form-check-label" for="inlineRadio1">Sim</label>
+									</div>
+									<div class="form-check form-check-inline" style="margin-left: 10px; border-radius:50px">
+										<input class="form-check-input" type="checkbox" id="exameNao" onclick="exmeNao()">
+										<label class="form-check-label" for="inlineRadio2">Não</label>
+									</div>
+								</div>
+
+							</div>
+
+							<div class="col-lg-4 col-md-6 col-sm-6 col-12">
+								<div class="form-group">
+									<label style="font-weight: bold;">Descrição :</label>
+									<textarea class="form-control" rows="1" id="desc_exame" disabled name="desc_exame_paciente"></textarea>
+								</div>
+							</div>
+
+
+							<div class="col-lg-2 col-md-6 col-sm-6 col-12">
+								<label style="font-weight: bold;">Med :</label>
+								<div class="form-group">
+									<div class="form-check form-check-inline" style="margin-left: 10px;">
+										<input class="form-check-input" type="checkbox" id="medicamentoSim" onclick="medSim()">
+										<label class="form-check-label" for="inlineRadio3">Sim</label>
+									</div>
+									<div class="form-check form-check-inline" style="margin-left: 10px;">
+										<input class="form-check-input" type="checkbox" id="medicamentoNao" onclick="medNao()">
+										<label class="form-check-label" for="inlineRadio4">Não</label>
+									</div>
+								</div>
+
+							</div>
+
+							<div class="col-lg-4 col-md-6 col-sm-6 col-12">
+								<div class="form-group">
+									<label style="font-weight: bold;">Descrição :</label>
+									<textarea class="form-control" rows="1" disabled name="desc_medicamento_paciente" id="desc_medicamento_paciente"></textarea>
+								</div>
+
+							</div>
+
+						</div>
+
+
+						<div class="form-group">
+							<label>Choose Category Color</label>
+							<select class="form-control form-white" data-placeholder="Choose a color..." name="category-color">
+								<option value="success">Success</option>
+								<option value="danger">Danger</option>
+								<option value="info">Info</option>
+								<option value="primary">Primary</option>
+								<option value="warning">Warning</option>
+								<option value="inverse">Inverse</option>
+							</select>
+						</div>
+						<div class="submit-section text-center">
+							<button type="button" class="btn btn-primary save-category submit-btn" data-dismiss="modal">Save</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+
+
+
+
+
 </body>
 
 </html>
