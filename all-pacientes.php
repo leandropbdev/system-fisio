@@ -331,7 +331,7 @@ include_once('./db/db-conection.php');
 
 										$querySelectPaciente = "SELECT p.cod_paciente, p.nome_paciente, a.cod_avaliacao, p.data_nasc_paciente, p.sexo_paciente FROM 
 										pacientes p join avaliacao_paciente a on a.ordem_paciente = p.cod_paciente  										
-										 ORDER BY nome_paciente ";
+										 ORDER BY cod_avaliacao desc limit 1 ";
 
 										$queryResultPaciente = $mysqli->query($querySelectPaciente);
 
@@ -376,10 +376,13 @@ include_once('./db/db-conection.php');
 
 												<tr>
 													<td>
+														<h2><?= $codAvaliacao; ?></h2>
+													</td>
+													<td>
 														<h2>
 															<form action="about-paciente.php" method="post">
 																<a class="avatar text-white">
-																	<button type="submit" name="codPaciente" value="<?php echo $codPaciente; ?>" style="border: none; background:none;"><?php echo substr($nomePaciente, 0, 1); ?></button>
+																	<button type="submit" name="codPaciente" value="<?php echo  $codPaciente; ?>" style="border: none; background:none;"><?php echo substr($nomePaciente, 0, 1); ?></button>
 																</a>
 															</form>
 

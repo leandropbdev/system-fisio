@@ -569,7 +569,6 @@ include_once('./db/db-conection.php');
 														</div>
 
 													</div>
-
 												</div>
 
 												<div class="row">

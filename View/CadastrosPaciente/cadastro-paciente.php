@@ -4,7 +4,8 @@ include_once('../../db/db-conection.php');
 
 // dd($_POST);
 
-// function dd($param){
+// function dd($param)
+// {
 //     echo '<pre>';
 //     print_r($param);
 //     echo '<pre>';
@@ -14,10 +15,12 @@ include_once('../../db/db-conection.php');
 
 $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
 
+$codPaciente = isset($dados['cod_paciente']) ? $dados['cod_paciente'] : null;
+
 $fisio = $dados['fisio'];
-$nomepaciente = $dados['nome_paciente'];
-$sexoPaciente =  $dados['sexo_paciente'];
-$dataNascPaciente =  $dados['data_nasc_paciente'];
+$nomepaciente = isset($dados['nome_paciente'])? $dados['nome_paciente'] :null;
+$sexoPaciente =  isset($dados['sexo_paciente'])?$dados['sexo_paciente']:null;
+$dataNascPaciente = isset($dados['data_nasc_paciente'])?$dados['data_nasc_paciente']:null;
 $susPaciente = isset($dados['sus_paciente']) ? $dados['sus_paciente'] : null;
 $cpfPaciente = isset($dados['cpf_paciente']) ? $dados['cpf_paciente'] : null;
 $etniaPaciente =  isset($dados['etnia_paciente']) ? $dados['etnia_paciente'] : null;
@@ -49,35 +52,50 @@ $eva_paciente = isset($dados['eva_paciente']) ? $dados['eva_paciente'] : null;
 // }
 
 
-// ==== CADASTRAR PACIENTES ======
 
-$queryInsertPaciente = "INSERT INTO pacientes values(default,'$nomepaciente','$sexoPaciente','$cpfPaciente','$dataNascPaciente','$telefonePaciente',
+
+
+
+
+
+
+//* CADASTRAR SOMENTE A AVALIAÇÃO DE UM PACIENTE QUE JA ESTA CADASTRADO ==
+
+if ($codPaciente == null) {
+
+
+    //* ==== CADASTRAR PACIENTES COM A AVALIAÇÃO ======
+
+    $queryInsertPaciente = "INSERT INTO pacientes values(default,'$nomepaciente','$sexoPaciente','$cpfPaciente','$dataNascPaciente','$telefonePaciente',
 '$enderecoPaciente','$bairroPaciente','$profissaoPaciente','$susPaciente','$etniaPaciente', NOW(),'')";
 
-$queryResultPaciente = $mysqli->query($queryInsertPaciente);
-if (mysqli_affected_rows($mysqli) > 0) {
+    $queryResultPaciente = $mysqli->query($queryInsertPaciente);
+    if (mysqli_affected_rows($mysqli) > 0) {
 
-    //=====PEGAR O ID DO PACIENTE PARA SALVA NA TABELA DE AVALIAÇÃO =====
-    $querySelectPaciente = "SELECT cod_paciente FROM pacientes ORDER BY cod_paciente desc limit 1";
-    $queryResult = $mysqli->query($querySelectPaciente);
-    while ($row_cont_paciente = mysqli_fetch_array($queryResult)) {
-        $codPaciente = $row_cont_paciente['cod_paciente'];
-    }
-
-
-
-    // === FAZ PARTE DO CADASTRO DO CLIENTE ====
-
-    if (isset($dados['situacao_paciente'])) {
-        foreach ($dados['situacao_paciente'] as $chave => $valor) {
-
-            $querynsertSitPaciente = "INSERT INTO tipo_situacao_paciente values(default,'$valor','$codPaciente',NOW())";
-            $queryResultSitPac = $mysqli->query($querynsertSitPaciente);
+        //=====PEGAR O ID DO PACIENTE PARA SALVA NA TABELA DE AVALIAÇÃO =====
+        $querySelectPaciente = "SELECT cod_paciente FROM pacientes ORDER BY cod_paciente desc limit 1";
+        $queryResult = $mysqli->query($querySelectPaciente);
+        while ($row_cont_paciente = mysqli_fetch_array($queryResult)) {
+            $codPaciente = $row_cont_paciente['cod_paciente'];
         }
+
+
+
+        //* === FAZ PARTE DO CADASTRO DO CLIENTE ====
+
+        if (isset($dados['situacao_paciente'])) {
+            foreach ($dados['situacao_paciente'] as $chave => $valor) {
+
+                $querynsertSitPaciente = "INSERT INTO tipo_situacao_paciente values(default,'$valor','$codPaciente',NOW())";
+                $queryResultSitPac = $mysqli->query($querynsertSitPaciente);
+            }
+        }
+    
     }
+}
 
 
-    //FAZ PARTE DA AVALIAÇÃO =======
+    //* ==== FAZ PARTE DA AVALIAÇÃO =======
 
     $querynsertAvaliacao = "INSERT INTO avaliacao_paciente values(default,'$codPaciente','$fisio','$diagMedPaciente','$cidPaciente','$diagFisioPaciente','$queixa_paciente','$hma_paciente','$trata_realizado_paciente','$desc_exame_paciente','$desc_medicamento_paciente','$desc_cirurgia_paciente','$eva_paciente',NOW(), '')";
     $queryResultAv = $mysqli->query($querynsertAvaliacao);
@@ -133,4 +151,4 @@ if (mysqli_affected_rows($mysqli) > 0) {
 
         echo "Cadastro realizado com sucesso";
     }
-}
+

@@ -553,10 +553,8 @@ include_once('./db/db-conection.php');
 													<div class="card">
 
 														<div class="card-header">
-
 															<span class="page-title">Avaliações do paciente</span>
-															<a href="#" class="btn btn-primary btn-rounded float-right" data-toggle="modal" data-target="#add_new_event"><i class="fas fa-plus"></i> Nova avaliação</a>
-
+															<a href="#" class="btn btn-primary btn-rounded float-right btn_nova_av" codpaciente="<?= $codPacienteForm; ?>" data-toggle="modal" data-target="#add_new_event"><i class="fas fa-plus"></i> Nova avaliação</a>
 														</div>
 
 														<div class="row">
@@ -612,7 +610,16 @@ include_once('./db/db-conection.php');
 																		?>
 																			<div class="tab-pane show <?= $active; ?>" id="av<?= $codAv ?>">
 																				Avaliação <?= $codAv ?>
+
 																			</div>
+
+
+
+
+
+
+
+
 
 																		<?php $contAv++;
 																		} ?>
@@ -1034,11 +1041,14 @@ include_once('./db/db-conection.php');
 
 	<script src="assets/js/app.js"></script>
 
+	<!-- SCRIPT PARA POP UP -->
+	<script src="assets/js/sweetalert2.all.min.js"></script>
+
 	<!-- SCRIPT PARA O PRELOAD DA PAGINA -->
 	<script src="assets/js/script-preload.js"></script>
 
-		<!-- SCRIPT PARA CASDATRO DO PACIENTE E VALIDAÇÃO DO FORMULARIO -->
-		<script src="assets/js/cadastro-paciente.js"></script>
+	<!-- SCRIPT PARA CASDATRA NOVA AVALIAÇÃO DO PACIENTE  -->
+	<script src="assets/js/cadastro-av-paciente.js"></script>
 
 
 
@@ -1051,7 +1061,47 @@ include_once('./db/db-conection.php');
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				<div class="modal-body">
-					<form>
+					<form id="form">
+
+						<div class="row">
+							<div class="col-lg-4 col-md-6 col-sm-6 col-12">
+								<div class="form-group">
+									<label>Cod paciente :</label>
+									<input class="form-control" rows="1" id="codPaciente" name="cod_paciente" />
+								</div>
+							</div>
+						</div>
+
+						<div class="row ">
+							<div class="col-lg-6 col-md-6 col-sm-6 col-12  " style="margin:  auto;">
+								<div class="form-group">
+									<label>Fisioterapeuta: <span id="alert_fisio"></span> </label>
+									<select class="form-control select" name="fisio" id="fisio" style="border-color:red;">
+										<option value="0" selected>Selecionar a Fisioterapeuta</option>
+										<?php
+										// BUCAR BAIRROS
+										$querySelectProf = "SELECT * FROM profissionais";
+										$resultQueryProf = mysqli_query($mysqli, $querySelectProf);
+
+										while ($row_result_prof = mysqli_fetch_array($resultQueryProf)) {
+											$cod_profissional = $row_result_prof['cod_profissional'];
+											$nome_profissional = $row_result_prof['nome_profissional'];
+
+										?>
+											<option value="<?php echo $cod_profissional ?>"><?php echo $nome_profissional; ?></option>
+
+										<?php
+
+										}
+
+										?>
+
+
+									</select>
+								</div>
+							</div>
+						</div>
+
 						<div class="row">
 							<div class="col-lg-5 col-md-6 col-sm-6 col-8">
 								<div class="form-group">
@@ -1130,48 +1180,27 @@ include_once('./db/db-conection.php');
 						</div>
 
 						<div class="row">
-							<div class="col-lg-2 col-md-6 col-sm-6 col-12">
-								<label style="font-weight: bold;">Exames :</label>
+
+
+							<div class="col-lg-4 col-md-6 col-sm-6 col-12">
 								<div class="form-group">
-									<div class="form-check form-check-inline" style="margin-left: 10px;">
-										<input class="form-check-input" type="checkbox" id="exameSim" onclick="exmeSim()">
-										<label class="form-check-label" for="inlineRadio1">Sim</label>
-									</div>
-									<div class="form-check form-check-inline" style="margin-left: 10px; border-radius:50px">
-										<input class="form-check-input" type="checkbox" id="exameNao" onclick="exmeNao()">
-										<label class="form-check-label" for="inlineRadio2">Não</label>
-									</div>
+									<label>Exames :</label>
+									<textarea class="form-control" rows="1" id="desc_exame" name="desc_exame_paciente"></textarea>
+								</div>
+							</div>
+
+							<div class="col-lg-4 col-md-6 col-sm-6 col-12">
+								<div class="form-group">
+									<label>Medicamentos:</label>
+									<textarea class="form-control" rows="1" name="desc_medicamento_paciente" id="desc_medicamento_paciente"></textarea>
 								</div>
 
 							</div>
 
 							<div class="col-lg-4 col-md-6 col-sm-6 col-12">
 								<div class="form-group">
-									<label style="font-weight: bold;">Descrição :</label>
-									<textarea class="form-control" rows="1" id="desc_exame" disabled name="desc_exame_paciente"></textarea>
-								</div>
-							</div>
-
-
-							<div class="col-lg-2 col-md-6 col-sm-6 col-12">
-								<label style="font-weight: bold;">Med :</label>
-								<div class="form-group">
-									<div class="form-check form-check-inline" style="margin-left: 10px;">
-										<input class="form-check-input" type="checkbox" id="medicamentoSim" onclick="medSim()">
-										<label class="form-check-label" for="inlineRadio3">Sim</label>
-									</div>
-									<div class="form-check form-check-inline" style="margin-left: 10px;">
-										<input class="form-check-input" type="checkbox" id="medicamentoNao" onclick="medNao()">
-										<label class="form-check-label" for="inlineRadio4">Não</label>
-									</div>
-								</div>
-
-							</div>
-
-							<div class="col-lg-4 col-md-6 col-sm-6 col-12">
-								<div class="form-group">
-									<label style="font-weight: bold;">Descrição :</label>
-									<textarea class="form-control" rows="1" disabled name="desc_medicamento_paciente" id="desc_medicamento_paciente"></textarea>
+									<label>Cirurgia :</label>
+									<textarea class="form-control" rows="1" name="desc_cirurgia_paciente" id="desc_cirurgia_paciente"></textarea>
 								</div>
 
 							</div>
@@ -1179,19 +1208,152 @@ include_once('./db/db-conection.php');
 						</div>
 
 
-						<div class="form-group">
-							<label>Choose Category Color</label>
-							<select class="form-control form-white" data-placeholder="Choose a color..." name="category-color">
-								<option value="success">Success</option>
-								<option value="danger">Danger</option>
-								<option value="info">Info</option>
-								<option value="primary">Primary</option>
-								<option value="warning">Warning</option>
-								<option value="inverse">Inverse</option>
-							</select>
+
+						<div class="row">
+							<div class="col-lg-12 col-md-6 col-sm-6 col-12">
+								<label>Inspeção/Palpação :</label>
+								<div class="form-group">
+									<?php
+									$querySelecEstadoP = "SELECT * FROM inspecao";
+									$result_estadoP = mysqli_query($mysqli, $querySelecEstadoP);
+
+									while ($row_result_estadoP = mysqli_fetch_array($result_estadoP)) {
+										$codInspecao = $row_result_estadoP['cod_inspecao'];
+										$nomeInspecao = $row_result_estadoP['nome_inspecao'];
+
+									?>
+										<div class="form-check form-check-inline" style="margin-left: 10px;">
+											<input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="<?php echo $codInspecao; ?>" name="inspecao_paciente[]">
+											<label class="form-check-label" for="inlineCheckbox1 "><?php echo $nomeInspecao; ?> </label>
+										</div>
+
+
+									<?php     }    ?>
+
+								</div>
+
+							</div>
 						</div>
-						<div class="submit-section text-center">
-							<button type="button" class="btn btn-primary save-category submit-btn" data-dismiss="modal">Save</button>
+
+						<div class="row">
+							<div class="col-lg-12 col-md-6 col-sm-6 col-12">
+								<label>intensidade da Dor :</label>
+								<div class="form-group">
+									<img src="assets/img/EVA-2.png" alt="EVA" style="width: 100%;">
+								</div>
+
+							</div>
+							<div class="col-lg-12 col-md-6 col-sm-6 col-12">
+								<div class="form-group">
+									<?php
+
+									for ($i = 0; $i < 11; $i++) {
+
+									?>
+										<div class="form-check form-check-inline" style="margin-left: 35px ; top:-25px">
+											<input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="<?php echo $i; ?>" name="eva_paciente">
+											<!-- <label class="form-check-label" for="inlineCheckbox1 "><?php echo "Grau" . $i; ?> </label> -->
+										</div>
+
+									<?php     }   ?>
+
+								</div>
+
+							</div>
+						</div>
+
+						<!-- <hr> -->
+						<div class="row mb-3">
+							<div class="col-lg-3 col-md-12 col-sm-12 col-3">
+								<h4 class="card card-title p-2" style="font-weight: bold;">Plano Terapêutico:</h4>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-lg-12 col-md-6 col-sm-6 col-12">
+								<label>Classificação do paciente :</label>
+								<div class="form-group">
+									<?php
+									$querySelecClassificacaoP = "SELECT * FROM classificacao_paciente";
+									$result_classificacaoP = mysqli_query($mysqli, $querySelecClassificacaoP);
+
+									while ($row_result_classificacaoP = mysqli_fetch_array($result_classificacaoP)) {
+										$codClassificacao = $row_result_classificacaoP['cod_classificacao'];
+										$nomeClassificao = $row_result_classificacaoP['nome_classificacao'];
+
+									?>
+										<div class="form-check form-check-inline" style="margin-left: 10px;">
+											<input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="<?php echo $codClassificacao; ?>" name="classificacao_paciente[]">
+											<label class="form-check-label" for="inlineCheckbox1 "><?php echo $nomeClassificao; ?> </label>
+										</div>
+
+
+									<?php     }    ?>
+
+								</div>
+
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-lg-12 col-md-6 col-sm-6 col-12">
+								<label>Tratamentos :</label>
+								<div class="form-group">
+									<?php
+									$querySelecTratamentoP = "SELECT * FROM tratamento_paciente";
+									$result_TratamentoP = mysqli_query($mysqli, $querySelecTratamentoP);
+
+									while ($row_result_tratamentoP = mysqli_fetch_array($result_TratamentoP)) {
+										$codTratamento = $row_result_tratamentoP['cod_tratamento'];
+										$nomeTratamento = $row_result_tratamentoP['nome_tratamento'];
+
+									?>
+										<div class="form-check form-check-inline" style="margin-left: 10px;">
+											<input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="<?php echo $codTratamento; ?>" name="tratamento_paciente[]">
+											<label class="form-check-label" for="inlineCheckbox1 "><?php echo $nomeTratamento; ?> </label>
+										</div>
+
+
+									<?php     }    ?>
+
+								</div>
+
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-lg-12 col-md-6 col-sm-6 col-12">
+								<label>Recursos Terapêuticos :</label>
+								<div class="form-group">
+									<?php
+									$querySelecRecursoTratamento = "SELECT * FROM recurso_tratamento";
+									$result_RecursoTratamento = mysqli_query($mysqli, $querySelecRecursoTratamento);
+
+									while ($row_result_recurso_tratamento = mysqli_fetch_array($result_RecursoTratamento)) {
+										$codRecTratamento = $row_result_recurso_tratamento['cod_recurso'];
+										$nomeRecTratamento = $row_result_recurso_tratamento['nome_recurso'];
+
+									?>
+										<div class="form-check form-check-inline" style="margin-left: 10px;">
+											<input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="<?php echo $codRecTratamento; ?>" name="recurso_paciente[]">
+											<label class="form-check-label" for="inlineCheckbox1 "><?php echo $nomeRecTratamento; ?> </label>
+										</div>
+
+
+									<?php     }    ?>
+
+								</div>
+
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-lg-12 col-md-12 col-sm-12 col-12">
+								<div class="form-group text-center custom-mt-form-group">
+									<button class="btn btn-primary mr-2" type="button" id="btn_cadstro_av">Salvar</button>
+									<button class="btn btn-secondary" class="close" data-dismiss="modal" aria-hidden="true" type="reset">Cancelar</button>
+								</div>
+							</div>
 						</div>
 					</form>
 				</div>
