@@ -508,43 +508,6 @@ include_once('./db/db-conection.php');
 										</div>
 									</div>
 
-									<?php
-									$querySelAvaliacao = "SELECT * FROM  avaliacao_paciente ap join profissionais pf on pf.cod_profissional = ap.ordem_profissional WHERE ordem_paciente ='$codPaciente' ";
-									$queryResultAv = $mysqli->query($querySelAvaliacao);
-
-									while ($row_cont_avaliacao = mysqli_fetch_array($queryResultAv)) {
-
-										$codAvaliacao = $row_cont_avaliacao['cod_avaliacao'];
-										$nomeFisio = $row_cont_avaliacao['nome_profissional'];
-										$sexoFisio = $row_cont_avaliacao['sexo'];
-										if ($sexoFisio == 'M') {
-											$sexoFisio = "Masculino";
-										} else {
-											$sexoFisio = "Feminina";
-										}
-										$qpPaciente = $row_cont_avaliacao['qp_paciente'];
-										$hmaPaciente = $row_cont_avaliacao['hma_paciente'];
-										$tratamentoPaciente = $row_cont_avaliacao['tratamento_realizado'];
-										$examePaciente = $row_cont_avaliacao['exames'];
-										$medicamentoPaciente = $row_cont_avaliacao['medicamentos'];
-										$cirurgiaPaciente = $row_cont_avaliacao['cirurgia'];
-										$evaPaciente = $row_cont_avaliacao['eva_paciente'];
-									}
-
-									// ======= condição para definir a quandidade de dor que o paciente esta sentindo ============
-									if ($evaPaciente > '0' and $evaPaciente <= '2') {
-										$evaPaciente = "Dor Leve";
-									} else if ($evaPaciente > '2' and $evaPaciente <= '7') {
-										$evaPaciente = "Dor Moderada";
-									} else if ($evaPaciente > '7' and $evaPaciente <= '10') {
-										$evaPaciente = "Dor Intensa";
-									} else {
-										$evaPaciente = "";
-									}
-
-
-									?>
-
 
 									<div class="col-lg-8 col-md-12 col-sm-12 col-12">
 										<div class="profile-content">
@@ -589,12 +552,10 @@ include_once('./db/db-conection.php');
 																		<li class="nav-item"><a class="nav-link" href="#basictab3" data-toggle="tab">Av 03</a></li> -->
 																	</ul>
 																	<div class="tab-content">
-
-
 																		<?php
 																		//* === BUSCA TODAS AS AVALIAÇÕES DO PACIENTE == -->
 																		$contAv = 1;
-																		$queryAv = "SELECT * FROM  avaliacao_paciente where ordem_paciente = '$codPaciente'";
+																		$queryAv = "SELECT * FROM  avaliacao_paciente ap join profissionais pr on ap.ordem_profissional = pr.cod_profissional where ordem_paciente = '$codPaciente'";
 																		$result_queryAv = $mysqli->query($queryAv);
 																		while ($row_cont_avaliacao = mysqli_fetch_array($result_queryAv)) {
 
@@ -606,30 +567,252 @@ include_once('./db/db-conection.php');
 																				$active = '';
 																			}
 
+																			//*AVALIAÇÃO 
+
+
+																			$codProfissional =  $row_cont_avaliacao['cod_profissional'];
+																			$profissional = $row_cont_avaliacao['nome_profissional'];
+																			$diagMedPaciente = $row_cont_avaliacao['diag_medico_paciente'];
+																			$cidPaciente = $row_cont_avaliacao['cid_paciente'];
+																			$diagFisioPaciente = $row_cont_avaliacao['diag_fisio_paciente'];
+
+																			$queixaPaciente = $row_cont_avaliacao['qp_paciente'];
+																			$hmaPaciente = $row_cont_avaliacao['hma_paciente'];
+																			$tramRealizadoPaciente = $row_cont_avaliacao['tratamento_realizado'];
+
+																			$examePaciente = $row_cont_avaliacao['exames'];
+																			$medPaciente = $row_cont_avaliacao['medicamentos'];
+																			$cirurgiaPaciente = $row_cont_avaliacao['cirurgia'];
+
+																			$eva_paciente = $row_cont_avaliacao['eva_paciente'];
+
+
+
 
 																		?>
 																			<div class="tab-pane show <?= $active; ?>" id="av<?= $codAv ?>">
 																				Avaliação <?= $codAv ?>
 
+																				<?php
+
+
+																				$querySelAvaliacao = "SELECT * FROM  avaliacao_paciente ap join profissionais pf on pf.cod_profissional = ap.ordem_profissional WHERE cod_avaliacao ='$codAv' ";
+																				$queryResultAv = $mysqli->query($querySelAvaliacao);
+
+																				while ($row_cont_avaliacao = mysqli_fetch_array($queryResultAv)) {
+
+																					$codAvaliacao = $row_cont_avaliacao['cod_avaliacao'];
+																					$codProfissional = $row_cont_avaliacao['cod_profissional'];
+																					$nomeFisio = $row_cont_avaliacao['nome_profissional'];
+
+																					$diagMedPaciente = $row_cont_avaliacao['diag_medico_paciente'];
+																					$cidPaciente = $row_cont_avaliacao['cid_paciente'];
+																					$diagFisioPaciente = $row_cont_avaliacao['diag_fisio_paciente'];
+
+
+																					$sexoFisio = $row_cont_avaliacao['sexo'];
+																					if ($sexoFisio == 'M') {
+																						$sexoFisio = "Masculino";
+																					} else {
+																						$sexoFisio = "Feminina";
+																					}
+																					$qpPaciente = $row_cont_avaliacao['qp_paciente'];
+																					$hmaPaciente = $row_cont_avaliacao['hma_paciente'];
+																					$tratamentoPaciente = $row_cont_avaliacao['tratamento_realizado'];
+																					$examePaciente = $row_cont_avaliacao['exames'];
+																					$medicamentoPaciente = $row_cont_avaliacao['medicamentos'];
+																					$cirurgiaPaciente = $row_cont_avaliacao['cirurgia'];
+																					$evaPaciente = $row_cont_avaliacao['eva_paciente'];
+																				}
+
+																				// ======= condição para definir a quandidade de dor que o paciente esta sentindo ============
+																				if ($evaPaciente > '0' and $evaPaciente <= '2') {
+																					$evaPaciente = "Dor Leve";
+																				} else if ($evaPaciente > '2' and $evaPaciente <= '7') {
+																					$evaPaciente = "Dor Moderada";
+																				} else if ($evaPaciente > '7' and $evaPaciente <= '10') {
+																					$evaPaciente = "Dor Intensa";
+																				} else {
+																					$evaPaciente = "";
+																				}
+
+
+																				?>
+
+
+																				<form id="form_ed">
+																					<div class="row ">
+																						<div class="col-lg-6 col-md-6 col-sm-6 col-12  " style="margin:  auto;">
+																							<div class="form-group">
+																								<label>Fisioterapeuta: <span id="alert_fisio"></span> </label>
+																								<!-- <input class="form-control" type="text" value="<?= $nomeFisio; ?>"> -->
+																								<select class="form-control" name="fisio" id="fisio">
+																									<option value="<?php echo $codProfissional; ?>" selected><?php echo $nomeFisio; ?></option>
+																									<?php
+																									// BUCAR BAIRROS
+																									$querySelectProf = "SELECT * FROM profissionais";
+																									$resultQueryProf = mysqli_query($mysqli, $querySelectProf);
+
+																									while ($row_result_prof = mysqli_fetch_array($resultQueryProf)) {
+																										$cod_profissional = $row_result_prof['cod_profissional'];
+																										$nome_profissional = $row_result_prof['nome_profissional'];
+
+																									?>
+																										<option value="<?php echo $cod_profissional ?>"><?php echo $nome_profissional; ?></option>
+
+																									<?php
+
+																									}
+
+																									?>
+
+
+																								</select>
+																							</div>
+																						</div>
+																					</div>
+
+																					<div class="row">
+																						<div class="col-lg-4 col-md-6 col-sm-6 col-8">
+																							<div class="form-group">
+																								<label>Diagnóstico Médico:</label>
+																								<textarea class="form-control" rows="2" name="diag_medico_paciente" id="diag_medico_paciente"><?php echo $diagMedPaciente; ?></textarea>
+																							</div>
+
+																						</div>
+
+																						<div class="col-lg-4 col-md-6 col-sm-6 col-4">
+																							<div class="form-group">
+																								<label>cid:</label>
+																								<input type="text" value="<?php echo $cidPaciente; ?>" class="form-control" name="cid_paciente">
+																							</div>
+
+																						</div>
+
+																						<div class="col-lg-4 col-md-6 col-sm-6 col-12">
+																							<div class="form-group">
+																								<label>Diagnóstico Fisioterapêutico:</label>
+																								<textarea class="form-control" rows="2" name="diag_fisio_paciente"><?php echo $diagFisioPaciente; ?></textarea>
+																							</div>
+
+																						</div>
+																					</div>
+
+																					<div class="row">
+																						<div class="col-lg-4 col-md-6 col-sm-6 col-12">
+																							<div class="form-group">
+																								<label>Queixa do Paciente :</label>
+																								<textarea class="form-control" rows="2" name="queixa_paciente"><?php echo $queixaPaciente; ?></textarea>
+																							</div>
+
+																						</div>
+																						<div class="col-lg-4 col-md-6 col-sm-6 col-12">
+																							<div class="form-group">
+																								<label>HMA :</label>
+																								<textarea class="form-control" rows="2" name="hma_paciente"><?php echo $hmaPaciente; ?></textarea>
+																							</div>
+
+																						</div>
+																						<div class="col-lg-4 col-md-6 col-sm-6 col-12">
+																							<div class="form-group">
+																								<label>Tratamento Realizado :</label>
+																								<textarea class="form-control" rows="2" name="trata_realizado_paciente"><?php echo $tramRealizadoPaciente; ?></textarea>
+																							</div>
+
+																						</div>
+																					</div>
+
+																					<div class="row">
+																						<div class="col-lg-12 col-md-6 col-sm-6 col-12">
+																							<label>Estado do Paciente:</label>
+																							<div class="form-group">
+
+																								<?php
+
+																								//*MOSTRAR TODOS OS ESTADOS QUE O PACIENTE NÃO ESTA
+
+																								$queryEstado = "SELECT * FROM estado_paciente order by cod_estado limit 7";
+																								$resultEstado = mysqli_query($mysqli, $queryEstado);
+
+																								//*Para mostra todos os estados cadastrados																						
+
+																								while ($row_estado = mysqli_fetch_array($resultEstado)) {
+
+																									$codEstado = $row_estado['cod_estado'];
+																									$nomeEstado = $row_estado['nome_estado'];
+
+
+
+
+																									//* Buscar somente os estado que esta cadastrado na tabela tipo_estado_paciente, se encontrar algum marca se não não marca
+																									$queryTipoEstado = "SELECT * FROM tipo_estado_paciente where ordem_estado = '$codEstado' and ordem_avaliacao = '$codAv'";
+																									$result = $mysqli->query($queryTipoEstado);
+
+																									if (mysqli_affected_rows($mysqli) > 0) {
+
+																										$select = "checked";
+																									} else {
+																										$select = "";
+																									}
+
+																								?>
+
+																									<div class="form-check form-check-inline" style="margin-left: 10px;">
+																										<input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="<?php echo $codEstado; ?>" name="estado_paciente[]" <?= $select; ?>>
+																										<label class="form-check-label" for="inlineCheckbox1 "><?php echo $nomeEstado; ?> </label>
+																									</div>
+
+																								<?php } ?>
+																							</div>
+
+																						</div>
+																					</div>
+
+
+																					<div class="row">
+
+
+																						<div class="col-lg-4 col-md-6 col-sm-6 col-12">
+																							<div class="form-group">
+																								<label >Exames :</label>
+																								<textarea class="form-control" rows="1" id="desc_exame" name="desc_exame_paciente"><?php echo $examePaciente; ?></textarea>
+																							</div>
+																						</div>
+
+																						<div class="col-lg-4 col-md-6 col-sm-6 col-12">
+																							<div class="form-group">
+																								<label >Medicamentos :</label>
+																								<textarea class="form-control" rows="1" name="desc_medicamento_paciente" id="desc_medicamento_paciente"> <?php echo $medPaciente; ?></textarea>
+																							</div>
+
+																						</div>
+
+																						<div class="col-lg-4 col-md-6 col-sm-6 col-12">
+																							<div class="form-group">
+																								<label >Cirurgias :</label>
+																								<textarea class="form-control" rows="1" name="desc_cirurgia_paciente" id="desc_cirurgia_paciente"><?php echo $cirurgiaPaciente; ?></textarea>
+																							</div>
+
+																						</div>
+
+																					</div>
+
+
+
+
+
+																				</form>
+
+
+
 																			</div>
-
-
-
-
-
-
 
 
 
 																		<?php $contAv++;
 																		} ?>
 
-																		<!-- <div class="tab-pane" id="av02">
-																			Avaliação 02
-																		</div>
-																		<div class="tab-pane" id="basictab3">
-																			Avaliação 3
-																		</div> -->
+
 																	</div>
 																</div>
 
@@ -638,7 +821,12 @@ include_once('./db/db-conection.php');
 
 
 
-														<div class="card-body">
+
+
+
+
+
+														<!-- <div class="card-body">
 															<div id="biography" class="biography">
 																<div class="row">
 																	<div class="col-md-3 col-6"> <strong>Fisioterapeuta </strong>
@@ -802,7 +990,7 @@ include_once('./db/db-conection.php');
 																</ul>
 
 															</div>
-														</div>
+														</div> -->
 													</div>
 												</div>
 											</div>
@@ -814,10 +1002,12 @@ include_once('./db/db-conection.php');
 					</div>
 				</div>
 			</div>
+
+
 			<div class="notification-box">
 				<div class="msg-sidebar notifications msg-noti">
 					<div class="topnav-dropdown-header">
-						<span>Messages</span>
+						<span>Mensagem</span>
 					</div>
 					<div class="drop-scroll msg-list-scroll">
 						<ul class="list-box">
@@ -1023,6 +1213,8 @@ include_once('./db/db-conection.php');
 					</div>
 				</div>
 			</div>
+
+
 		</div>
 
 	</div>
@@ -1076,7 +1268,7 @@ include_once('./db/db-conection.php');
 							<div class="col-lg-6 col-md-6 col-sm-6 col-12  " style="margin:  auto;">
 								<div class="form-group">
 									<label>Fisioterapeuta: <span id="alert_fisio"></span> </label>
-									<select class="form-control select" name="fisio" id="fisio" style="border-color:red;">
+									<select class="form-control select" name="fisio" id="fisio">
 										<option value="0" selected>Selecionar a Fisioterapeuta</option>
 										<?php
 										// BUCAR BAIRROS
@@ -1350,7 +1542,7 @@ include_once('./db/db-conection.php');
 						<div class="row">
 							<div class="col-lg-12 col-md-12 col-sm-12 col-12">
 								<div class="form-group text-center custom-mt-form-group">
-									<button class="btn btn-primary mr-2" type="button" id="btn_cadstro_av">Salvar</button>
+									<button class="btn btn-primary mr-2" type="button" id="btn_cadastro_av">Salvar</button>
 									<button class="btn btn-secondary" class="close" data-dismiss="modal" aria-hidden="true" type="reset">Cancelar</button>
 								</div>
 							</div>

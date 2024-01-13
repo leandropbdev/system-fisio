@@ -375,9 +375,9 @@ include_once('./db/db-conection.php');
 										?>
 
 												<tr>
-													<td>
+													<!-- <td>
 														<h2><?= $codAvaliacao; ?></h2>
-													</td>
+													</td> -->
 													<td>
 														<h2>
 															<form action="about-paciente.php" method="post">

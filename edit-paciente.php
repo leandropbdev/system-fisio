@@ -238,6 +238,7 @@ include_once('./db/db-conection.php');
 				</div>
 				<div class="page-content">
 					<div class="row">
+						
 						<div class="col-lg-12 col-md-12 col-sm-12 col-12">
 							<div class="card">
 								<div class="card-body">
@@ -756,11 +757,9 @@ include_once('./db/db-conection.php');
 
 
 
-												<!-- $examePaciente = $result_row['exames'];
-											$medPaciente = $result_row['medicamentos'];
-											$cirurgiaPaciente = $result_row['cirurgia'];
-
- -->
+																			<!-- $examePaciente = $result_row['exames'];
+																		$medPaciente = $result_row['medicamentos'];
+																		$cirurgiaPaciente = $result_row['cirurgia'];		-->
 
 												<?php
 												//TESTE PRA  CASO PACIENTE TENHA EXAMES, MDICMENTOS E CIRURGIA
@@ -845,9 +844,6 @@ include_once('./db/db-conection.php');
 														</div>
 
 													</div>
-
-
-
 
 												</div>
 
@@ -1386,12 +1382,14 @@ include_once('./db/db-conection.php');
 
 
 											</form>
+
 										</div>
 									</div>
 
 								</div>
 							</div>
 						</div>
+
 					</div>
 				</div>
 			</div>

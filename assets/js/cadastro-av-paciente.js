@@ -17,7 +17,7 @@ $(document).ready(function () {
 //*----=== Pegando a ação do botão cadastrar AV ------
 
 $(document).ready(function () {
-    $("#btn_cadstro_av").click(function (e) {        
+    $("#btn_cadastro_av").click(function (e) {        
 
 
         //*----=== VALIDAÇÃO DOS CAMPOS OBRIGATORIOS ------
