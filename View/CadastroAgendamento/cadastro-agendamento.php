@@ -12,6 +12,29 @@ include_once('../../db/db-conection.php');
 //     die();
 // }
 
+// Array
+// (
+//     [dias_sem] => Array
+//         (
+//             [0] => 1
+//             [1] => 3
+//             [2] => 5
+//         )
+
+//     [horario_inicial] => 07:00
+//     [horario_final] => 08:00
+//     [profissional] => 1
+//     [nome_paciente] => Leandro Braga
+//     [sexo_paciente] => M
+//     [data_nascimento] => 1996-06-12
+//     [sus_paciente] => 444333333322
+//     [cpf_paciente] => 899.993.939-39
+//     [rua_paciente] => Antonio Medeiros, 83
+//     [bairro_paciente] => Vila Falcão
+//     [procedimento] => 1
+//     [observacao] => 
+// )
+
 
 $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
 
@@ -50,10 +73,10 @@ $observacao = isset($dados['observacao']) ? $dados['observacao'] : null;
 
 
 
-//==== CADASTRA UM NOVO PACIENTE =====
+//*==== CADASTRA UM NOVO PACIENTE =====
 if ($cod_paciente == "") {
 
-    // ==== CADASTRAR PACIENTES ======
+    //* ==== CADASTRAR PACIENTES ======
 
     $queryInsertPaciente = "INSERT INTO pacientes (cod_paciente, nome_paciente, sexo_paciente, cpf_paciente, data_nasc_paciente, rua_paciente, bairro_paciente, sus_paciente, data_cad_paciente) 
 values(default,'$nomePaciente','$sexoPaciente','$cpfPaciente','$dataNascimento','$ruaPaciente','$bairroPaciente','$susPaciente', NOW())";
@@ -61,7 +84,7 @@ values(default,'$nomePaciente','$sexoPaciente','$cpfPaciente','$dataNascimento',
     $queryResultPaciente = $mysqli->query($queryInsertPaciente);
     if (mysqli_affected_rows($mysqli) > 0) {
 
-        //=====PEGAR O ID DO PACIENTE PARA SALVA NA TABELA DE AVALIAÇÃO ===== PEGAR O ULTIMO CODIGO CADASTRADO
+        //*=====PEGAR O ID DO PACIENTE PARA SALVA NA TABELA DE AVALIAÇÃO ===== PEGAR O ULTIMO CODIGO CADASTRADO
         $querySelectPaciente = "SELECT cod_paciente FROM pacientes ORDER BY cod_paciente desc limit 1";
         $queryResult = $mysqli->query($querySelectPaciente);
         while ($row_cont_paciente = mysqli_fetch_array($queryResult)) {
@@ -70,12 +93,12 @@ values(default,'$nomePaciente','$sexoPaciente','$cpfPaciente','$dataNascimento',
 
         //FAZ PARTE DA AVALIAÇÃO =======
 
-        $querynsertAvaliacao = "INSERT INTO avaliacao_paciente values(default,'$codPaciente','$profissional','','','','','','','',NOW(), '')";
+        $querynsertAvaliacao = "INSERT INTO avaliacao_paciente values(default,'$codPaciente','$profissional','','','','','','','','','','',NOW(), '')";
         $queryResultAv = $mysqli->query($querynsertAvaliacao);
 
         if (mysqli_affected_rows($mysqli) > 0) {
 
-            //=====PEGAR O ID DA AVALIAÇÃO  ===== PEGAR O ULTIMO CODIGO CADSATRADO
+            //*=====PEGAR O ID DA AVALIAÇÃO  ===== PEGAR O ULTIMO CODIGO CADSATRADO
             $querySelectAvPaciente = "SELECT cod_avaliacao FROM avaliacao_paciente ORDER BY cod_avaliacao desc limit 1";
             $queryResultAvPac = $mysqli->query($querySelectAvPaciente);
             while ($row_cont_ava_paciente = mysqli_fetch_array($queryResultAvPac)) {
@@ -94,7 +117,7 @@ values(default,'$nomePaciente','$sexoPaciente','$cpfPaciente','$dataNascimento',
 
 
 
-            //CADASTRA A AGENDA = AGENDA O PACIENTE NA TABELA AGENDAMENTO_PACIENTE
+            //*CADASTRA A AGENDA = AGENDA O PACIENTE NA TABELA AGENDAMENTO_PACIENTE
             $querynsertAgendamento = "INSERT INTO agendamento_paciente values(default,'$codPaciente','$profissional','$procedimento','$horario_inicial','$horario_final','1','$observacao', NOW(),'') ";
             $queryResultAgd = $mysqli->query($querynsertAgendamento);
 
@@ -107,7 +130,7 @@ values(default,'$nomePaciente','$sexoPaciente','$cpfPaciente','$dataNascimento',
 
 
 
-            // ====== CADASTRAR OS DIAS DA SEMANA QUE O PACIENTE FOI AGENDADO NA TABELA dias_semana_paciente, esta em um array ====
+            //* ====== CADASTRAR OS DIAS DA SEMANA QUE O PACIENTE FOI AGENDADO NA TABELA dias_semana_paciente, esta em um array ====
             if (isset($dados['dias_sem'])) {
                 foreach ($dados['dias_sem'] as $chave5 => $valor5) {
 
@@ -119,7 +142,7 @@ values(default,'$nomePaciente','$sexoPaciente','$cpfPaciente','$dataNascimento',
             echo "Paciente agendado com sucesso";
         }
     }
-} else { // PACIENTE JA ÉSTA CADASTRADO, MAIS NÃO AGENDADO
+} else { //* PACIENTE JA ÉSTA CADASTRADO, MAIS NÃO AGENDADO
 
 
     //=====PEGAR O ID DO AGENDAMENTO  =====

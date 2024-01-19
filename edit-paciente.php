@@ -238,7 +238,7 @@ include_once('./db/db-conection.php');
 				</div>
 				<div class="page-content">
 					<div class="row">
-						
+
 						<div class="col-lg-12 col-md-12 col-sm-12 col-12">
 							<div class="card">
 								<div class="card-body">
@@ -249,10 +249,13 @@ include_once('./db/db-conection.php');
 											$codPaciente = isset($_POST['cod-paciente']) ? $_POST['cod-paciente'] : null;
 											$codPaciente =  $codPaciente;
 
-											$querySelectPaciente = "SELECT * FROM pacientes p join avaliacao_paciente ap on ap.ordem_paciente = p.cod_paciente join profissionais pr on ap.ordem_profissional = pr.cod_profissional where p.cod_paciente = $codPaciente";
+											$querySelectPaciente = "SELECT * FROM pacientes p join avaliacao_paciente ap on ap.ordem_paciente = p.cod_paciente join profissionais pr on ap.ordem_profissional = pr.cod_profissional where p.cod_paciente = '$codPaciente' order by ap.cod_avaliacao desc  ";
 											$resultQuery = mysqli_query($mysqli, $querySelectPaciente);
 
 											$result_row = mysqli_fetch_array($resultQuery);
+
+											$codAvaliacao = $result_row['cod_avaliacao'];
+											// echo $codAvaliacao;
 
 											$codProfissional =  $result_row['cod_profissional'];
 											$profissional = $result_row['nome_profissional'];
@@ -286,6 +289,12 @@ include_once('./db/db-conection.php');
 
 											?>
 											<form id="form">
+
+												<div class="row">
+													<div class="col-lg-4">
+														<input type="hidden" class="form-control" value="<?= $codAvaliacao ?>" name="cod_avaliacao">
+													</div>
+												</div>
 
 												<div class="row ">
 													<div class="col-lg-6 col-md-6 col-sm-6 col-12  " style="margin:  auto;">
@@ -450,127 +459,47 @@ include_once('./db/db-conection.php');
 														</div>
 													</div>
 												</div>
-
 												<div class="row">
 													<div class="col-lg-12 col-md-6 col-sm-6 col-12">
-														<label>Situação do Paciente:</label>
+														<label>Situação do Paciente::</label>
 														<div class="form-group">
+
 															<?php
-															$querySelecSituacaoP = "SELECT * FROM situacao_paciente";
+
+															//*MOSTRAR TODOS OS ESTADOS QUE O PACIENTE NÃO ESTA
+
+															$querySelecSituacaoP = "SELECT * FROM situacao_paciente order by cod_situacao ";
 															$result_situacaoP = mysqli_query($mysqli, $querySelecSituacaoP);
 
-															$contSitPaciente = 0;
-															$contSitCadPaciente = 0;
+															//*Para mostra todos os estados cadastrados																						
 
 															while ($row_result_situacaoP = mysqli_fetch_array($result_situacaoP)) {
 
-																$nomeSituacao = $row_result_situacaoP['nome_situacao'];
 																$codSituacao = $row_result_situacaoP['cod_situacao'];
-
-																$contSitCadPaciente += 1;
-																$codCadSitPaciente[] = $codSituacao; //ARRAY 01 IRA RECEBER TODOS OS CODIGO DA SITUAÇÃO JA CADASTRADA
+																$nomeSituacao = $row_result_situacaoP['nome_situacao'];
 
 
-															}
-
-															// print_r($codCadSitPaciente);
-
-															// BUSCAR TODOS AS SITUAÇÕS CADASTRADA DO PACIENTE 
-															$querySitPaciente = "SELECT * FROM pacientes p 
-															join tipo_situacao_paciente tsp on tsp.ordem_paciente = p.cod_paciente 
-															join situacao_paciente sp on sp.cod_situacao = tsp.ordem_situacao 
-															where p.cod_paciente = '$codPaciente' ";
-															$resultSit = mysqli_query($mysqli, $querySitPaciente);
-
-															//Criar um ARRAY VAZIO
-															for ($c = 0; $c <  $contSitCadPaciente; $c++) {
-
-																$codsitPaciente[$c] = " "; //TABELA CLISERVICO
-																//$codtbservico[] = $cod_servico;
-
-															}
-															// print_r($codsitPaciente);
-
-															$cont = 0;
-
-															while ($row_cadSitPaciente_cont = mysqli_fetch_array($resultSit)) {
-
-																$codPaciente = $row_cadSitPaciente_cont['ordem_paciente'];
-																$codSituacao = $row_cadSitPaciente_cont['ordem_situacao'];
-
-																$contSitPaciente += 1;
-
-																$codsitPaciente[$cont] = $codSituacao; // ARRAY 02
-
-																$cont++;
-															} //ATÉ AQUI SOMENTE  PEGUEI OS DOIS ARRAY, ARRAY 1 DE TODOS AS SITUAÇÃO E ARRAY 2 DE AS SITUAÇÕES DO PACIENTE, E CRIEI UM ARRAY VAZIO  DO MESMO TAMANHO DO ARRAY 1 PARA GUARDA OS VALORE DO ARRAY 2 COM O CODIGO DAS SITUAÇÕES CADASTRADA
-
-															// print_r($codCadSitPaciente);
-															// echo "</br>";
-															// print_r($codsitPaciente);
-															// echo "</br>";
 
 
-															//PEGANDO A DIFERENÇA ENTRE O ARRAY 1 E 2
-															$diferenca = array_diff($codCadSitPaciente, $codsitPaciente);
-															// print_r($diferenca);
+																//* Buscar somente os estado que esta cadastrado na tabela tipo_estado_paciente, se encontrar algum marca se não não marca
+																$queryTipoEstado = "SELECT * FROM tipo_situacao_paciente where ordem_situacao = '$codSituacao' and ordem_paciente = '$codPaciente'";
+																$result = $mysqli->query($queryTipoEstado);
 
+																if (mysqli_affected_rows($mysqli) > 0) {
 
-															foreach ($diferenca as $mostra) { //DISMENBRANDO O ARRAY  DA DIFERENÇA
-
-																//MOSTRAS AS SITUAÇOES QUE NÃO ESTÃO MARCADO (A DIFERENÇA)
-																// SELECT DE TODOS AS SITUAÇÕES 
-
-																$queryselect = "SELECT * from situacao_paciente where cod_situacao = $mostra  "; //so vou buscar no banco a diferenca
-																$queryselect_cont = mysqli_query($mysqli, $queryselect);
-
-
-																while ($row_queryselect_cont = mysqli_fetch_array($queryselect_cont)) {
-																	$codSituacao = $row_queryselect_cont['cod_situacao'];
-																	$nomeSituacao = $row_queryselect_cont['nome_situacao'];
-
-																	// echo "<br>cod da situacao não marcado = " . $codSituacao;
-
+																	$select = "checked";
+																} else {
+																	$select = "";
+																}
 
 															?>
-																	<div class="form-check form-check-inline" style="margin-left: 10px;">
-																		<input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="<?php echo $codSituacao; ?>" name="situacao_paciente[]">
-																		<label class="form-check-label" for="inlineCheckbox1 "><?php echo $nomeSituacao; ?> </label>
-																	</div>
-																<?php
-
-																} // while
-															} //FOREACH
-															//MOSTRAS AS SITUAÇÕES QUE NÃO ESTÃO MARCADO (A DIFERENÇA)
-
-															//MOSTRAR AS SITUAÇÕES MARCADAS
-
-															// BUSCAR TODOS AS SITUAÇÕS CADASTRADA DO PACIENTE 
-															$querySitPacienteCad = "SELECT * FROM pacientes p 
-															join tipo_situacao_paciente tsp on tsp.ordem_paciente = p.cod_paciente 
-															join situacao_paciente sp on sp.cod_situacao = tsp.ordem_situacao 
-															where p.cod_paciente = '$codPaciente' ";
-															$resultSitCad = mysqli_query($mysqli, $querySitPacienteCad);
-
-															while ($row_cadSitCadPaciente_cont = mysqli_fetch_array($resultSitCad)) {
-
-																$nomeSituacaoCad = $row_cadSitCadPaciente_cont['nome_situacao'];
-																$codSituacaoCad = $row_cadSitCadPaciente_cont['cod_situacao'];
-
-																$selecionado = "checked";
-
-																?>
 
 																<div class="form-check form-check-inline" style="margin-left: 10px;">
-																	<input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="<?php echo $codSituacaoCad; ?>" name="situacao_paciente[]" <?php echo $selecionado; ?>>
-																	<label class="form-check-label" for="inlineCheckbox1 "><?php echo $nomeSituacaoCad; ?> </label>
+																	<input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="<?php echo $codSituacao; ?>" name="situacao_paciente[]" <?= $select; ?>>
+																	<label class="form-check-label" for="inlineCheckbox1 "><?php echo $nomeSituacao; ?> </label>
 																</div>
 
-
-															<?php
-															}
-															?>
-
+															<?php } ?>
 														</div>
 
 													</div>
@@ -578,7 +507,9 @@ include_once('./db/db-conection.php');
 
 
 
-									
+
+
+
 
 												<hr>
 												<div class="row mb-3">
@@ -644,120 +575,52 @@ include_once('./db/db-conection.php');
 
 												<div class="row">
 													<div class="col-lg-12 col-md-6 col-sm-6 col-12">
-														<label style="font-weight: bold;">Estado do Paciente:</label>
+														<label>Estado do Paciente:</label>
 														<div class="form-group">
 
 															<?php
 
-															//MOSTRAR TODOS OS ESTADOS QUE O PACIENTE NÃO ESTA
+															//*MOSTRAR TODOS OS ESTADOS QUE O PACIENTE NÃO ESTA
 
-															$queryEstado = "SELECT * FROM estado_paciente";
+															$queryEstado = "SELECT * FROM estado_paciente order by cod_estado ";
 															$resultEstado = mysqli_query($mysqli, $queryEstado);
 
-
-															//Para mostra todos os serviços cadastrados
-															//VARIAVEL PARA CRIRA UM CONTADOR 
-															$countEstado = 0;
-															$countcadEstado = 0;
+															//*Para mostra todos os estados cadastrados																						
 
 															while ($row_estado = mysqli_fetch_array($resultEstado)) {
 
 																$codEstado = $row_estado['cod_estado'];
 																$nomeEstado = $row_estado['nome_estado'];
 
-																$countcadEstado += 1;
-
-																$codtbEstado[] =  $codEstado; // ARRAY 1
-															}
 
 
 
+																//* Buscar somente os estado que esta cadastrado na tabela tipo_estado_paciente, se encontrar algum marca se não não marca
+																$queryTipoEstado = "SELECT * FROM tipo_estado_paciente where ordem_estado = '$codEstado' and ordem_avaliacao = '$codAvaliacao'";
+																$result = $mysqli->query($queryTipoEstado);
 
-															$querySelecEstadoP = "SELECT * FROM tipo_estado_paciente te join avaliacao_paciente ap on ap.cod_avaliacao = te.ordem_avaliacao join estado_paciente ep on ep.cod_estado = te.ordem_estado where ap.ordem_paciente = '$codPaciente'";
-															$result_estadoP = mysqli_query($mysqli, $querySelecEstadoP);
+																if (mysqli_affected_rows($mysqli) > 0) {
 
-															//Criar um ARRAY VAZIO
-															for ($c = 0; $c <  $countcadEstado; $c++) {
+																	$select = "checked";
+																} else {
+																	$select = "";
+																}
 
-																$codEstadoPaciente[$c] = " "; //CRIANDO UM ARRAY VAZIO
-
-
-															}
-															$cont = 0;
-															while ($row_result_estadoP = mysqli_fetch_array($result_estadoP)) {
-
-																$nomeEstado = $row_result_estadoP['nome_estado'];
-																$codEstado = $row_result_estadoP['cod_estado'];
-
-																$countEstado += 1;
-
-
-																$codEstadoPaciente[$cont] = $codEstado;
-
-																$cont++;
-															} //ATÉ AQUI SOMENTE  PEGUEI OS DOIS ARRAY, ARRAY 1 DE TODOS OS SERVICO E ARRAY 2 DOS SERVICO DO CLIENTE, E CRIEI UM ARRAY VAZIO  DO MESMO TAMANHO DO ARRAY 1 PARA GUARDA OS VALORE DO ARRAY 2
-
-															// print_r($codtbEstado);
-															// echo"</br>";
-															// print_r($codEstadoPaciente);
-															// echo"</br>";
-
-															//PEGANDO A DIFERENÇA ENTRE O ARRAY 1 E 2
-															$diferenca = array_diff($codtbEstado, $codEstadoPaciente);
-															// print_r ($diferenca);
-
-
-															foreach ($diferenca as $mostra) { //DISMENBRANDO O ARRAY  DA DIFERENÇA 
-
-																$queryEstado = "SELECT * FROM estado_paciente where cod_estado = '$mostra' ";
-																$resultEstado = mysqli_query($mysqli, $queryEstado);
-
-																while ($row_estado = mysqli_fetch_array($resultEstado)) {
-
-																	$codEstado = $row_estado['cod_estado'];
-																	$nomeEstado = $row_estado['nome_estado'];
 															?>
-																	<div class="form-check form-check-inline" style="margin-left: 10px;">
-																		<input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="<?php echo $codEstado; ?>" name="estado_paciente[]">
-																		<label class="form-check-label" for="inlineCheckbox1 "><?php echo $nomeEstado; ?> </label>
-																	</div>
-
-
-																<?php
-
-																} // while
-															} //FOREACH
-															//MOSTRAS OS SERVICO QUE NÃO ESTÃO MARCADO (A DIFERENÇA)
-
-
-															$querySelecEstadoP = "SELECT * FROM tipo_estado_paciente te join avaliacao_paciente ap on ap.cod_avaliacao = te.ordem_avaliacao join estado_paciente ep on ep.cod_estado = te.ordem_estado where ap.ordem_paciente = '$codPaciente'";
-															$result_estadoP = mysqli_query($mysqli, $querySelecEstadoP);
-
-															while ($row_result_estadoP = mysqli_fetch_array($result_estadoP)) {
-
-																$nomeEstado = $row_result_estadoP['nome_estado'];
-																$codEstado = $row_result_estadoP['cod_estado'];
-
-																?>
 
 																<div class="form-check form-check-inline" style="margin-left: 10px;">
-																	<input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="<?php echo $codEstado; ?>" name="estado_paciente[]" checked>
+																	<input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="<?php echo $codEstado; ?>" name="estado_paciente[]" <?= $select; ?>>
 																	<label class="form-check-label" for="inlineCheckbox1 "><?php echo $nomeEstado; ?> </label>
 																</div>
 
-															<?php
-															}
-
-															?>
-
+															<?php } ?>
 														</div>
 
 													</div>
 												</div>
 
 
-
-																			<!-- $examePaciente = $result_row['exames'];
+												<!-- $examePaciente = $result_row['exames'];
 																		$medPaciente = $result_row['medicamentos'];
 																		$cirurgiaPaciente = $result_row['cirurgia'];		-->
 
@@ -872,117 +735,52 @@ include_once('./db/db-conection.php');
 													</div>
 												</div>
 
-
-
 												<div class="row">
 													<div class="col-lg-12 col-md-6 col-sm-6 col-12">
 														<label style="font-weight: bold;">Inspeção/Palpação :</label>
 														<div class="form-group">
+
 															<?php
 
-															//MOSTRAR TODOS AS INSPECAO QUE O PACIENTE NÃO ESTA
-
-															$queryInspecao = "SELECT * FROM inspecao";
+															//*MOSTRAR TODOS OS ESTADOS QUE O PACIENTE NÃO ESTA
+															$queryInspecao = "SELECT * FROM inspecao order by cod_inspecao ";
 															$resultInspecao = mysqli_query($mysqli, $queryInspecao);
 
-															//Para mostra todos os serviços cadastrados
-															//VARIAVEL PARA CRIRA UM CONTADOR 
-															$countInspecao = 0;
-															$countcadInspecao = 0;
+															//*Para mostra todos os estados cadastrados																						
 
 															while ($row_inspecao = mysqli_fetch_array($resultInspecao)) {
 
 																$codInspencao = $row_inspecao['cod_inspecao'];
-																$nomeEstado = $row_inspecao['nome_inspecao'];
-
-																$countcadInspecao += 1;
-
-																$codtbInspecao[] =  $codInspencao; // ARRAY 1
-															}
+																$nomeinspecao = $row_inspecao['nome_inspecao'];
 
 
-															$querySelecInspecaoP = "SELECT * FROM tipo_inspecao ti join avaliacao_paciente ap on ap.cod_avaliacao = ti.ordem_avaliacao join inspecao i on i.cod_inspecao = ti.ordem_inspecao where ap.ordem_paciente = '$codPaciente'";
-															$result_inspecaoP = mysqli_query($mysqli, $querySelecInspecaoP);
-
-															//Criar um ARRAY VAZIO
-															for ($c = 0; $c <  $countcadInspecao; $c++) {
-
-																$codInspecaoPaciente[$c] = " "; //CRIANDO UM ARRAY VAZIO
 
 
-															}
-															$cont = 0;
-															while ($row_result_inspecaoP = mysqli_fetch_array($result_inspecaoP)) {
+																//* Buscar somente os estado que esta cadastrado na tabela tipo_inspecao_paciente, se encontrar algum marca se não não marca
+																$querySelecInspecaoP = "SELECT * FROM tipo_inspecao  where  ordem_inspecao = '$codInspencao' and ordem_avaliacao = '$codAvaliacao'";
+																$result_inspecaoP = mysqli_query($mysqli, $querySelecInspecaoP);
 
-																$nomeInspecao = $row_result_inspecaoP['nome_inspecao'];
-																$codInspecao = $row_result_inspecaoP['cod_inspecao'];
+																if (mysqli_affected_rows($mysqli) > 0) {
 
-																$countInspecao += 1;
+																	$select = "checked";
+																} else {
+																	$select = "";
+																}
 
-
-																$codInspecaoPaciente[$cont] = $codInspecao;
-
-																$cont++;
-															} //ATÉ AQUI SOMENTE  PEGUEI OS DOIS ARRAY, ARRAY 1 DE TODOS OS INSPECAO E ARRAY 2 DOS INSPECAO DO PACIENTE, E CRIEI UM ARRAY VAZIO  DO MESMO TAMANHO DO ARRAY 1 PARA GUARDA OS VALORE DO ARRAY 2
-
-															// print_r($codtbInspecao);
-															// echo "</br>";
-															// print_r($codInspecaoPaciente);
-															// echo "</br>";
-
-															//PEGANDO A DIFERENÇA ENTRE O ARRAY 1 E 2
-															$diferenca = array_diff($codtbInspecao, $codInspecaoPaciente);
-															// print_r($diferenca);
-
-
-															foreach ($diferenca as $mostra) { //DISMENBRANDO O ARRAY  DA DIFERENÇA 
-
-																$queryInspecao = "SELECT * FROM inspecao where cod_inspecao = '$mostra' ";
-																$resultInspecao = mysqli_query($mysqli, $queryInspecao);
-
-																while ($row_inspecao = mysqli_fetch_array($resultInspecao)) {
-
-																	$codInspecao = $row_inspecao['cod_inspecao'];
-																	$nomeInspecao = $row_inspecao['nome_inspecao'];
 															?>
-																	<div class="form-check form-check-inline" style="margin-left: 10px;">
-																		<input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="<?php echo $codInspecao; ?>" name="inspecao_paciente[]">
-																		<label class="form-check-label" for="inlineCheckbox1 "><?php echo $nomeInspecao; ?> </label>
-																	</div>
 
-
-																<?php
-
-																} // while
-															} //FOREACH
-															//MOSTRAS AS INSPECAO QUE NÃO ESTÃO MARCADO (A DIFERENÇA)
-
-
-
-															$querySelecInspecaoP = "SELECT * FROM tipo_inspecao ti join avaliacao_paciente ap on ap.cod_avaliacao = ti.ordem_avaliacao join inspecao i on i.cod_inspecao = ti.ordem_inspecao where ap.ordem_paciente = '$codPaciente'";
-															$result_inspecaoP = mysqli_query($mysqli, $querySelecInspecaoP);
-
-															while ($row_inspecao = mysqli_fetch_array($result_inspecaoP)) {
-
-																$codInspecao = $row_inspecao['cod_inspecao'];
-																$nomeInspecao = $row_inspecao['nome_inspecao'];
-																?>
 																<div class="form-check form-check-inline" style="margin-left: 10px;">
-																	<input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="<?php echo $codInspecao; ?>" name="inspecao_paciente[]" checked>
-																	<label class="form-check-label" for="inlineCheckbox1 "><?php echo $nomeInspecao; ?> </label>
+																	<input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="<?php echo $codInspencao; ?>" name="inspecao_paciente[]" <?= $select; ?>>
+																	<label class="form-check-label" for="inlineCheckbox1 "><?php echo $nomeinspecao; ?> </label>
 																</div>
 
-
-															<?php
-
-															} // while
-
-															?>
-
+															<?php } ?>
 														</div>
 
 													</div>
 												</div>
+
+
 
 												<div class="row">
 													<div class="col-lg-12 col-md-6 col-sm-6 col-12">
@@ -1045,110 +843,42 @@ include_once('./db/db-conection.php');
 													<div class="col-lg-12 col-md-6 col-sm-6 col-12">
 														<label style="font-weight: bold;">Classificação do paciente :</label>
 														<div class="form-group">
+
 															<?php
 
-															//=== PRIMEIRO BUSCAR TODOS OS TRATAMENTOS DA TABELA CLASSSIFICACAO PACIENTE =====
-															$querySelecClassificacaoP = "SELECT * FROM classificacao_paciente";
-															$result_classificacaoP = mysqli_query($mysqli, $querySelecClassificacaoP);
+															//*MOSTRAR CLASSIFICAÇÃO DO PACIENTE
+															$queryClassificao = "SELECT * FROM classificacao_paciente order by cod_classificacao ";
+															$resultClassificacao = mysqli_query($mysqli, $queryClassificao);
 
-															$contClassPaciente = 0;
-															$contCadClassPaciente = 0;
+															//*Para mostra todos os estados cadastrados																						
 
+															while ($row_classificao = mysqli_fetch_array($resultClassificacao)) {
 
-															while ($row_result_classificacaoP = mysqli_fetch_array($result_classificacaoP)) {
-																$codClassificacao = $row_result_classificacaoP['cod_classificacao'];
-																$nomeClassificacao = $row_result_classificacaoP['nome_classificacao'];
-
-																//CONTAR QUANTOS CLASSIFICACAO ESTÃO CADASTRADO
-																$contClassPaciente += 1;
-
-
-																// CRIAR UM ARRAY COM OS CODIGOS DE TODOS OS CLASSIFICACAO CADASTRADO
-																$codtbClassPaciente[] = $codClassificacao;	 //ARRAY 01															
-
-															}
-
-															//== BUSCAR DA TABELA TIPO_CLASSIFICACAO_PACIENTE TODOS OS CLASSIFICACAO QUE O PACIENTE ESTA CADASTRADO ==
-
-															$querySelectClassificacao = "SELECT * FROM tipo_classificacao_paciente tcpp join avaliacao_paciente ap on ap.cod_avaliacao = tcpp.ordem_avaliacao where ap.ordem_paciente = '$codPaciente'";
-															$resultQueryClassificacao = mysqli_query($mysqli, $querySelectClassificacao);
-
-															//CRIAR UMA ARRAY VAZIO DOMESMO TAMANHO QUE O ARRAY 01
-															for ($c = 0; $c < $contClassPaciente; $c++) {
-																$contTbClasificacao[$c] = "";
-															}
+																$codClassificacao = $row_classificao['cod_classificacao'];
+																$nomeClassificacao = $row_classificao['nome_classificacao'];
 
 
 
-															$cont = 0;
-															while ($row_classificacao = mysqli_fetch_array($resultQueryClassificacao)) {
 
-																$codClassificacao = $row_classificacao['ordem_classificacao'];
+																//* Buscar somente as classificacao que esta cadastrado na tabela tipo_classificao_paciente, se encontrar algum marca se não não marca
+																$queryClassificao = "SELECT * FROM tipo_classificacao_paciente tcpp join avaliacao_paciente ap on ap.cod_avaliacao = tcpp.ordem_avaliacao  where ordem_classificacao = '$codClassificacao' and ordem_avaliacao = '$codAvaliacao'";
+																$result_classificao = mysqli_query($mysqli, $queryClassificao);
 
-																$contCadClassPaciente += 1;
+																if (mysqli_affected_rows($mysqli) > 0) {
 
+																	$select = "checked";
+																} else {
+																	$select = "";
+																}
 
-																/// PREENCHER O ARRAY VAZIO COM AS CLASSIFICACAO DO PACIENTE CADASTRADO 
-																$contTbClasificacao[$cont] = $codClassificacao;
-
-																$cont++;
-															}
-
-															// print_r($codtbTratPaciente);
-															// echo "</br>";
-															// print_r($contTbTratamento);
-															// echo "</br>";
-
-															//PEGANDO A DIFERENÇA ENTRE O ARRAY 1 E 2
-															$diferenca = array_diff($codtbClassPaciente, $contTbClasificacao);
-															// print_r($diferenca);
-
-															//DISMENPRA O ARRAY DA DIFERENÇA COM FOREACH
-
-															foreach ($diferenca as $mostra) {
-
-																//BUSCAR SOMENTE OS CLASSIFICACAO QUE O PACIENTE NÃO FAZ PARTE
-
-																$queryClassificacao = "SELECT * FROM classificacao_paciente where cod_classificacao = '$mostra'";
-																$resultClassificacao = mysqli_query($mysqli, $queryClassificacao);
-
-																while ($row_classificacao = mysqli_fetch_array($resultClassificacao)) {
-
-																	$codclassificacao = $row_classificacao['cod_classificacao'];
-																	$nomeClassificacao = $row_classificacao['nome_classificacao'];
 															?>
 
-																	<div class="form-check form-check-inline" style="margin-left: 10px;">
-																		<input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="<?php echo $codclassificacao; ?>" name="classificacao_paciente[]">
-																		<label class="form-check-label" for="inlineCheckbox1 "><?php echo $nomeClassificacao; ?> </label>
-																	</div>
-
-
-
-
-																<?php
-
-																}
-															}
-
-															//MOSTRAR SOMENTE OS classificacao QUE O PACIENTE PERTECE
-															$querySelectClassificacao = "SELECT * FROM tipo_classificacao_paciente tcpp join avaliacao_paciente ap on ap.cod_avaliacao = tcpp.ordem_avaliacao JOIN classificacao_paciente cp on cp.cod_classificacao = tcpp.ordem_classificacao where ap.ordem_paciente = '$codPaciente'";
-															$resultQueryClassificacao = mysqli_query($mysqli, $querySelectClassificacao);
-
-															while ($row_classificacao_result = mysqli_fetch_array($resultQueryClassificacao)) {
-
-																$codClassificacao = $row_classificacao_result['cod_classificacao'];
-																$nomeClassificacao = $row_classificacao_result['nome_classificacao'];
-
-																?>
 																<div class="form-check form-check-inline" style="margin-left: 10px;">
-																	<input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="<?php echo $codClassificacao; ?>" name="classificacao_paciente[]" checked>
+																	<input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="<?php echo $codClassificacao; ?>" name="classificacao_paciente[]" <?= $select; ?>>
 																	<label class="form-check-label" for="inlineCheckbox1 "><?php echo $nomeClassificacao; ?> </label>
 																</div>
 
-
-															<?php   }  ?>
-
+															<?php } ?>
 														</div>
 
 													</div>
@@ -1159,112 +889,42 @@ include_once('./db/db-conection.php');
 													<div class="col-lg-12 col-md-6 col-sm-6 col-12">
 														<label style="font-weight: bold;">Tratamentos :</label>
 														<div class="form-group">
+
 															<?php
 
-															//=== PRIMEIRO BUSCAR TODOS OS TRATAMENTOS DA TABELA TRATAMENTO PACIENTE =====
-															$querySelecTratamentoP = "SELECT * FROM tratamento_paciente";
-															$result_TratamentoP = mysqli_query($mysqli, $querySelecTratamentoP);
+															//*MOSTRAR tratamento DO PACIENTE
+															$queryTratamento = "SELECT * FROM tratamento_paciente order by cod_tratamento ";
+															$resultTratamento = mysqli_query($mysqli, $queryTratamento);
 
-															$contTratPaciente = 0;
-															$contCadTratPaciente = 0;
+															//*Para mostra todos os estados cadastrados																						
 
+															while ($row_tratamento = mysqli_fetch_array($resultTratamento)) {
 
-															while ($row_result_tratamentoP = mysqli_fetch_array($result_TratamentoP)) {
-																$codTratamento = $row_result_tratamentoP['cod_tratamento'];
-																$nomeTratamento = $row_result_tratamentoP['nome_tratamento'];
-
-																//CONTAR QUANTOS TRATAMENTO ESTÃO CADASTRADO
-																$contTratPaciente += 1;
-
-
-																// CRIAR UM ARRAY COM OS CODIGOS DE TODOS OS TRAMENTOS CADASTRADO
-																$codtbTratPaciente[] = $codTratamento;	 //ARRAY 01															
-
-															}
-
-															//== BUSCAR DA TABELA TIPO_TRATAMENTO_PACIENTE TODOS OS TRATAMENTOS QUE O PACIENTE ESTA CADASTRADO ==
-
-															$querySelectTratamento = "SELECT * FROM tipo_tratamento_paciente ttp join avaliacao_paciente ap on ap.cod_avaliacao = ttp.ordem_avaliacao where ap.ordem_paciente = '$codPaciente'";
-															$resultQueryTratamento = mysqli_query($mysqli, $querySelectTratamento);
-
-															//CRIAR UMA ARRAY VAZIO DOMESMO TAMANHO QUE O ARRAY 01
-															for ($c = 0; $c < $contTratPaciente; $c++) {
-																$contTbTratamento[$c] = "";
-															}
+																$codTratamento = $row_tratamento['cod_tratamento'];
+																$nomeTratamento = $row_tratamento['nome_tratamento'];
 
 
 
-															$cont = 0;
-															while ($row_tratamento = mysqli_fetch_array($resultQueryTratamento)) {
 
-																$codTratamento = $row_tratamento['ordem_tratamento'];
+																//* Buscar somente as tratamento que esta cadastrado na tabela tipo_classificao_paciente, se encontrar algum marca se não não marca
+																$queryTratamento = "SELECT * FROM tipo_tratamento_paciente ttp join avaliacao_paciente ap on ap.cod_avaliacao = ttp.ordem_avaliacao  where ordem_tratamento = '$codTratamento' and ordem_avaliacao = '$codAvaliacao'";
+																$result_Tratamento = mysqli_query($mysqli, $queryTratamento);
 
-																$contCadTratPaciente += 1;
+																if (mysqli_affected_rows($mysqli) > 0) {
 
+																	$select = "checked";
+																} else {
+																	$select = "";
+																}
 
-																/// PREENCHER O ARRAY VAZIO COM OS TRATAMENTOS DO PACIENTE CADASTRADO 
-																$contTbTratamento[$cont] = $codTratamento;
-
-																$cont++;
-															}
-
-															// print_r($codtbTratPaciente);
-															// echo "</br>";
-															// print_r($contTbTratamento);
-															// echo "</br>";
-
-															//PEGANDO A DIFERENÇA ENTRE O ARRAY 1 E 2
-															$diferenca = array_diff($codtbTratPaciente, $contTbTratamento);
-															// print_r($diferenca);
-
-															//DISMENPRA O ARRAY DA DIFERENÇA COM FOREACH
-
-															foreach ($diferenca as $mostra) {
-
-																//BUSCAR SOMENTE OS TRATAMENTOS QUE O PACIENTE NÃO FAZ PARTE
-
-																$queryTratamento = "SELECT * FROM tratamento_paciente where cod_tratamento = '$mostra'";
-																$resultTratamento = mysqli_query($mysqli, $queryTratamento);
-
-																while ($row_tratamento = mysqli_fetch_array($resultTratamento)) {
-
-																	$codTratamento = $row_tratamento['cod_tratamento'];
-																	$nomeTratamento = $row_tratamento['nome_tratamento'];
 															?>
 
-																	<div class="form-check form-check-inline" style="margin-left: 10px;">
-																		<input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="<?php echo $codTratamento; ?>" name="tratamento_paciente[]">
-																		<label class="form-check-label" for="inlineCheckbox1 "><?php echo $nomeTratamento; ?> </label>
-																	</div>
-
-
-
-
-																<?php
-
-																}
-															}
-
-
-
-															//MOSTRAR SOMENTE OS TRATAMENTO QUE O PACIENTE PERTECE
-															$querySelectTratamento = "SELECT * FROM tipo_tratamento_paciente ttp join avaliacao_paciente ap on ap.cod_avaliacao = ttp.ordem_avaliacao JOIN tratamento_paciente tp on tp.cod_tratamento = ttp.ordem_tratamento where ap.ordem_paciente = '$codPaciente'";
-															$resultQueryTratamento = mysqli_query($mysqli, $querySelectTratamento);
-
-															while ($row_tratamento_result = mysqli_fetch_array($resultQueryTratamento)) {
-
-																$codTratamento = $row_tratamento_result['cod_tratamento'];
-																$nomeTratamento = $row_tratamento_result['nome_tratamento'];
-
-																?>
 																<div class="form-check form-check-inline" style="margin-left: 10px;">
-																	<input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="<?php echo $codTratamento; ?>" name="tratamento_paciente[]" checked>
+																	<input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="<?php echo $codTratamento; ?>" name="tratamento_paciente[]" <?= $select; ?>>
 																	<label class="form-check-label" for="inlineCheckbox1 "><?php echo $nomeTratamento; ?> </label>
 																</div>
 
-
-															<?php   }  ?>
-
+															<?php } ?>
 														</div>
 
 													</div>
@@ -1274,100 +934,46 @@ include_once('./db/db-conection.php');
 													<div class="col-lg-12 col-md-6 col-sm-6 col-12">
 														<label style="font-weight: bold;">Recursos Terapêuticos :</label>
 														<div class="form-group">
+
 															<?php
 
-															//TODOS O SRECURSOS CADASTRADOS 
-															$querySelecRecursoTratamento = "SELECT * FROM recurso_tratamento";
-															$result_RecursoTratamento = mysqli_query($mysqli, $querySelecRecursoTratamento);
+															//*MOSTRAR Recursos Terapêuticos DO PACIENTE
+															$queryRecursoTratamento = "SELECT * FROM recurso_tratamento order by cod_recurso ";
+															$resultRecursoTratamento = mysqli_query($mysqli, $queryRecursoTratamento);
 
-															$countRecurso = 0;
+															//*Para mostra todos os estados cadastrados																						
 
+															while ($row_recurso_tratamento = mysqli_fetch_array($resultRecursoTratamento)) {
 
-															while ($row_result_recurso_tratamento = mysqli_fetch_array($result_RecursoTratamento)) {
-																$codRecTratamento = $row_result_recurso_tratamento['cod_recurso'];
-																$nomeRecTratamento = $row_result_recurso_tratamento['nome_recurso'];
-
-																$countRecurso += 1;
-
-																$codTbRecurso[] = $codRecTratamento;
-															}
-
-
-															//TODOS OS RECURSO DO PACIENTE
-
-															$querySelectRecurso = "SELECT * FROM tipo_recurso_tratamento trt join avaliacao_paciente ap on ap.cod_avaliacao = trt.ordem_avaliacao where ap.ordem_paciente ='$codPaciente'";
-															$query_result = mysqli_query($mysqli, $querySelectRecurso);
-
-															//CRIAR UM ARRAY VAZIO
-															for ($i = 0; $i < $countRecurso; $i++) {
-
-																$codTbRecursoV[$i] = "";
-															}
-
-															$cont = 0;
-
-															while ($row_recurso = mysqli_fetch_array($query_result)) {
-
-																$codRecurso = $row_recurso['ordem_recurso'];
-
-																$codTbRecursoV[$cont] = $codRecurso;
-
-																$cont++;
-															}
-
-															// print_r($codTbRecurso);
-															// echo"</br>";
-															// print_r($codTbRecursoV);
-															// echo"</br>";
-
-															//PEGANDO A DIFERENÇA ENTRE O ARRAY 1 E 2
-															$diferenca = array_diff($codTbRecurso, $codTbRecursoV);
-															// print_r ($diferenca);
+																$codRecursoTratamento = $row_recurso_tratamento['cod_recurso'];
+																$nomeRecursoTratamento = $row_recurso_tratamento['nome_recurso'];
 
 
 
-															foreach ($diferenca as $mostra) {
-																$querySelecRecursoTratamento = "SELECT * FROM recurso_tratamento where cod_recurso = '$mostra'";
-																$result_RecursoTratamento = mysqli_query($mysqli, $querySelecRecursoTratamento);
 
-																while ($row_recurso = mysqli_fetch_array($result_RecursoTratamento)) {
+																//* Buscar somente as classificacao que esta cadastrado na tabela tipo_classificao_paciente, se encontrar algum marca se não não marca
+																$queryRecursoTratamento = "SELECT * FROM tipo_recurso_tratamento tcpp join avaliacao_paciente ap on ap.cod_avaliacao = tcpp.ordem_avaliacao  where ordem_recurso = '$codRecursoTratamento' and ordem_avaliacao = '$codAvaliacao'";
+																$result_recursoTratamento = mysqli_query($mysqli, $queryRecursoTratamento);
 
-																	$codRecTratamento = $row_recurso['cod_recurso'];
-																	$nomeRecTratamento = $row_recurso['nome_recurso'];
-															?>
-																	<div class="form-check form-check-inline" style="margin-left: 10px;">
-																		<input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="<?php echo $codRecTratamento; ?>" name="recurso_paciente[]">
-																		<label class="form-check-label" for="inlineCheckbox1 "><?php echo $nomeRecTratamento; ?> </label>
-																	</div>
+																if (mysqli_affected_rows($mysqli) > 0) {
 
-
-																<?php
+																	$select = "checked";
+																} else {
+																	$select = "";
 																}
-															}
 
-															$querySelectRecurso = "SELECT * FROM tipo_recurso_tratamento trt join avaliacao_paciente ap on ap.cod_avaliacao = trt.ordem_avaliacao join recurso_tratamento rt on rt.cod_recurso = trt.ordem_recurso where ap.ordem_paciente ='$codPaciente'";
-															$query_result = mysqli_query($mysqli, $querySelectRecurso);
-
-															while ($row_recurso = mysqli_fetch_array($query_result)) {
-
-																$codRecTratamento = $row_recurso['cod_recurso'];
-																$nomeRecTratamento = $row_recurso['nome_recurso'];
-																?>
+															?>
 
 																<div class="form-check form-check-inline" style="margin-left: 10px;">
-																	<input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="<?php echo $codRecTratamento; ?>" name="recurso_paciente[]" checked>
-																	<label class="form-check-label" for="inlineCheckbox1 "><?php echo $nomeRecTratamento; ?> </label>
+																	<input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="<?php echo $codRecursoTratamento; ?>" name="recurso_paciente[]" <?= $select; ?>>
+																	<label class="form-check-label" for="inlineCheckbox1 "><?php echo $nomeRecursoTratamento; ?> </label>
 																</div>
-															<?php
 
-															}
-															?>
-
+															<?php } ?>
 														</div>
 
 													</div>
 												</div>
-
 
 
 

@@ -17,21 +17,27 @@ $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
 
 $codPaciente = isset($dados['cod_paciente']) ? $dados['cod_paciente'] : null;
 
+$codAvaliacao = isset($dados['cod_avaliacao']) ? $dados['cod_avaliacao'] : null;
+
 $fisio = $dados['fisio'];
-$nomepaciente = $dados['nome_paciente'];
-$sexoPaciente =  $dados['sexo_paciente'];
-$dataNascPaciente =  $dados['data_nasc_paciente'];
-$susPaciente = isset($dados['sus_paciente']) ? $dados['sus_paciente'] : "";
+
+$nomepaciente = isset($dados['nome_paciente']) ? $dados['nome_paciente'] : null;
+$sexoPaciente =  isset($dados['sexo_paciente']) ? $dados['sexo_paciente'] : null;
+$dataNascPaciente =  isset($dados['data_nasc_paciente']) ? $dados['data_nasc_paciente'] : null;
+$susPaciente = isset($dados['sus_paciente']) ? $dados['sus_paciente'] : null;
 $cpfPaciente = isset($dados['cpf_paciente']) ? $dados['cpf_paciente'] : null;
 $etniaPaciente =  isset($dados['etnia_paciente']) ? $dados['etnia_paciente'] : null;
 $profissaoPaciente = isset($dados['profissao_paciente']) ? $dados['profissao_paciente'] : null;
 $enderecoPaciente = isset($dados['endereco_paciente']) ? $dados['endereco_paciente'] : null;
 $bairroPaciente = isset($dados['bairro_paciente']) ? $dados['bairro_paciente'] : null;
 $telefonePaciente = isset($dados['telefone_paciente']) ? $dados['telefone_paciente'] : null;
+
+
+//* ====== DADOS  DA AVALIACÃO =======
+
 $diagMedPaciente = isset($dados['diag_medico_paciente']) ? $dados['diag_medico_paciente'] : null;
 $cidPaciente =  isset($dados['cid_paciente']) ? $dados['cid_paciente'] : null;
 $diagFisioPaciente = isset($dados['diag_fisio_paciente']) ? $dados['diag_fisio_paciente'] : null;
-
 $queixa_paciente = isset($dados['queixa_paciente']) ? $dados['queixa_paciente'] : null;
 $hma_paciente = isset($dados['hma_paciente']) ? $dados['hma_paciente'] : null;
 $trata_realizado_paciente = isset($dados['trata_realizado_paciente']) ? $dados['trata_realizado_paciente'] : null;
@@ -40,62 +46,50 @@ $desc_medicamento_paciente = isset($dados['desc_medicamento_paciente']) ? $dados
 $desc_cirurgia_paciente = isset($dados['desc_cirurgia_paciente']) ? $dados['desc_cirurgia_paciente'] : null;
 $eva_paciente = isset($dados['eva_paciente']) ? $dados['eva_paciente'] : null;
 
-//======= condição para definir a quandidade de dor que o paciente esta sentindo ============
-// if ($eva_paciente > '0' and $eva_paciente <= '2') {
-//     $eva_paciente = "Dor Leve";
-// } else if ($eva_paciente > '2' and $eva_paciente <= '7') {
-//     $eva_paciente = "Dor Moderada";
-// } else if ($eva_paciente > '7' and $eva_paciente <= '10') {
-//     $eva_paciente = "Dor Intensa";
-// } else {
-//     $eva_paciente = "";
-// }
 
 
-// ==== EDITAR PACIENTES ======
 
-// $queryInsertPaciente = "INSERT INTO pacientes values(default,'$nomepaciente','$sexoPaciente','$cpfPaciente','$dataNascPaciente','$telefonePaciente',
-// '$enderecoPaciente','$bairroPaciente','$profissaoPaciente','$susPaciente','$etniaPaciente','$diagMedPaciente','$cidPaciente','$diagFisioPaciente', NOW())";
+//* ==== EDITAR PACIENTES SÓ ATUALIZA SE A VARIAVEL NOME NÃO FOR VAZIA, NO CASO SE FOR EDITADO PELO FOMRULARIO PRINCIPAL ======
 
+if ($nomepaciente != "") {
 
-$queryEdtPaciente = "UPDATE pacientes SET  nome_paciente = '$nomepaciente', sexo_paciente = '$sexoPaciente',
+    $queryEdtPaciente = "UPDATE pacientes SET  nome_paciente = '$nomepaciente', sexo_paciente = '$sexoPaciente',
  cpf_paciente = '$cpfPaciente', data_nasc_paciente ='$dataNascPaciente', telefone_paciente = '$telefonePaciente',
  rua_paciente = '$enderecoPaciente', bairro_paciente = '$bairroPaciente', profissao_paciente = '$profissaoPaciente',
- sus_paciente = '$susPaciente', etnia_paciente = '$etniaPaciente', diag_medico_paciente = '$diagMedPaciente', cid_paciente = '$cidPaciente',
- diag_fisio_paciente = '$diagFisioPaciente', data_atualizacao = NOW()   WHERE cod_paciente = '$codPaciente'";
+ sus_paciente = '$susPaciente', etnia_paciente = '$etniaPaciente', data_atualizacao = NOW()   WHERE cod_paciente = '$codPaciente'";
 
-$queryResultPaciente = $mysqli->query($queryEdtPaciente);
+    $queryResultPaciente = $mysqli->query($queryEdtPaciente);
 
 
-// === FAZ PARTE DO CADASTRO DO CLIENTE ====
+    //* === FAZ PARTE DO CADASTRO DO CLIENTE SITUAÇÃO DO PACIENTE====
 
-if (isset($dados['situacao_paciente'])) {
+    if (isset($dados['situacao_paciente'])) {
 
-    $deleteSituacao = "DELETE FROM tipo_situacao_paciente where ordem_paciente = '$codPaciente' ";
-    $resultDelete = mysqli_query($mysqli, $deleteSituacao);
+        $deleteSituacao = "DELETE FROM tipo_situacao_paciente where ordem_paciente = '$codPaciente' ";
+        $resultDelete = mysqli_query($mysqli, $deleteSituacao);
 
-    foreach ($dados['situacao_paciente'] as $chave => $valor) {
+        foreach ($dados['situacao_paciente'] as $chave => $valor) {
 
-        $querynsertSitPaciente = "INSERT INTO tipo_situacao_paciente values(default,'$valor','$codPaciente',NOW())";
-        $queryResultSitPac = $mysqli->query($querynsertSitPaciente);
+            $querynsertSitPaciente = "INSERT INTO tipo_situacao_paciente values(default,'$valor','$codPaciente',NOW())";
+            $queryResultSitPac = $mysqli->query($querynsertSitPaciente);
+        }
+    } else {
+        $deleteSituacao = "DELETE FROM tipo_situacao_paciente where ordem_paciente = '$codPaciente' ";
+        $resultDelete = mysqli_query($mysqli, $deleteSituacao);
     }
-} else {
-    $deleteSituacao = "DELETE FROM tipo_situacao_paciente where ordem_paciente = '$codPaciente' ";
-    $resultDelete = mysqli_query($mysqli, $deleteSituacao);
 }
 
+//* FAZ PARTE DA AVALIAÇÃO =======
 
-//FAZ PARTE DA AVALIAÇÃO =======
-
-
-$queryEdtAvaliacao = "UPDATE avaliacao_paciente  SET  ordem_profiSSional = '$fisio', qp_paciente = '$queixa_paciente', hma_paciente = ' $hma_paciente',
-    tratamento_realizado = '$trata_realizado_paciente', exames = '$desc_exame_paciente', medicamentos = '$desc_medicamento_paciente',
-    cirurgia = '$desc_cirurgia_paciente', eva_paciente = '$eva_paciente', data_atualizacao_av = NOW()   WHERE ordem_paciente = '$codPaciente'";
+$queryEdtAvaliacao = "UPDATE avaliacao_paciente  SET  ordem_profissional = '$fisio', diag_medico_paciente = '$diagMedPaciente', cid_paciente = '$cidPaciente',
+diag_fisio_paciente = '$diagFisioPaciente', qp_paciente = '$queixa_paciente', hma_paciente = ' $hma_paciente',
+tratamento_realizado = '$trata_realizado_paciente', exames = '$desc_exame_paciente', medicamentos = '$desc_medicamento_paciente',
+ cirurgia = '$desc_cirurgia_paciente', eva_paciente = '$eva_paciente', data_atualizacao_av = NOW()   WHERE ordem_paciente = '$codPaciente' and cod_avaliacao = '$codAvaliacao'";
 $queryUpAvaliacao = mysqli_query($mysqli, $queryEdtAvaliacao);
 
 
-//PEGAR O ID DA AVALIACAO DO PACIENTE
-$querySelectAvaliacao = " SELECT cod_avaliacao FROM avaliacao_paciente WHERE ordem_paciente = '$codPaciente'";
+//*PEGAR O ID DA AVALIACAO DO PACIENTE
+$querySelectAvaliacao = " SELECT cod_avaliacao FROM avaliacao_paciente WHERE ordem_paciente = '$codPaciente' and cod_avaliacao = '$codAvaliacao'";
 $resultSelectAv = mysqli_query($mysqli, $querySelectAvaliacao);
 
 $row_result = mysqli_fetch_array($resultSelectAv);

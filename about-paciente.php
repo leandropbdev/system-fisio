@@ -516,7 +516,7 @@ include_once('./db/db-conection.php');
 													<div class="card">
 
 														<div class="card-header">
-															<span class="page-title">Avaliações do paciente</span>
+															<span class="page-title">Histórico  do paciente</span>
 															<a href="#" class="btn btn-primary btn-rounded float-right btn_nova_av" codpaciente="<?= $codPacienteForm; ?>" data-toggle="modal" data-target="#add_new_event"><i class="fas fa-plus"></i> Nova avaliação</a>
 														</div>
 
@@ -555,7 +555,7 @@ include_once('./db/db-conection.php');
 																		<?php
 																		//* === BUSCA TODAS AS AVALIAÇÕES DO PACIENTE == -->
 																		$contAv = 1;
-																		$queryAv = "SELECT * FROM  avaliacao_paciente ap join profissionais pr on ap.ordem_profissional = pr.cod_profissional where ordem_paciente = '$codPaciente'";
+																		$queryAv = "SELECT * FROM  avaliacao_paciente ap join profissionais pr on ap.ordem_profissional = pr.cod_profissional where ordem_paciente = '$codPaciente' ";
 																		$result_queryAv = $mysqli->query($queryAv);
 																		while ($row_cont_avaliacao = mysqli_fetch_array($result_queryAv)) {
 
@@ -590,8 +590,22 @@ include_once('./db/db-conection.php');
 
 
 																		?>
-																			<div class="tab-pane show <?= $active; ?>" id="av<?= $codAv ?>">
-																				Avaliação <?= $codAv ?>
+																			<div class="tab-pane show  <?= $active; ?>" id="av<?= $codAv ?>">
+
+
+																				<div class="row" style="display:flex; flex-direction:row; justify-content:space-between; margin:0 10px;">
+																					<div >Avaliação <?= $codAv ?></div>
+																					<div class=" ">
+																						<button type="submit" name="cod-paciente" value="<?php echo $codPaciente; ?>" class="btn btn-primary btn-sm mb-2">
+																							<i class="far fa-edit"></i>
+																						</button>
+
+																						<button data-toggle="modal" codPaciente="<?php echo $codPaciente; ?>" nomePaciente="<?php echo $nomePaciente; ?>" data-target="#delete_employee" class="btn btn-danger btn-sm mb-1 btn_delete">
+																							<i class="far fa-trash-alt"></i>
+																						</button>
+																					</div>
+
+																				</div>
 
 																				<?php
 
@@ -640,13 +654,13 @@ include_once('./db/db-conection.php');
 																				?>
 
 
-																				<form id="form_ed">
+																				<form class="form_ed">
 																					<div class="row ">
 																						<div class="col-lg-6 col-md-6 col-sm-6 col-12  " style="margin:  auto;">
 																							<div class="form-group">
 																								<label>Fisioterapeuta: <span id="alert_fisio"></span> </label>
 																								<!-- <input class="form-control" type="text" value="<?= $nomeFisio; ?>"> -->
-																								<select class="form-control" name="fisio" id="fisio">
+																								<select class="form-control" name="fisio" id="fisio" disabled>
 																									<option value="<?php echo $codProfissional; ?>" selected><?php echo $nomeFisio; ?></option>
 																									<?php
 																									// BUCAR BAIRROS
@@ -671,12 +685,22 @@ include_once('./db/db-conection.php');
 																							</div>
 																						</div>
 																					</div>
+																					<div class="row">
+																						<div class="col-lg-4">
+																							<input type="hidden" class="form-control" value="<?= $codPaciente ?>"  name="cod_paciente" >
+																						</div>
+																					</div>
+																					<div class="row">
+																						<div class="col-lg-4">
+																							<input type="hidden" class="form-control" value="<?= $codAv ?>"    name="cod_avaliacao" >
+																						</div>
+																					</div>
 
 																					<div class="row">
 																						<div class="col-lg-4 col-md-6 col-sm-6 col-8">
 																							<div class="form-group">
 																								<label>Diagnóstico Médico:</label>
-																								<textarea class="form-control" rows="2" name="diag_medico_paciente" id="diag_medico_paciente"><?php echo $diagMedPaciente; ?></textarea>
+																								<textarea class="form-control" rows="2" name="diag_medico_paciente" id="diag_medico_paciente" disabled><?php echo $diagMedPaciente; ?></textarea>
 																							</div>
 
 																						</div>
@@ -684,7 +708,7 @@ include_once('./db/db-conection.php');
 																						<div class="col-lg-4 col-md-6 col-sm-6 col-4">
 																							<div class="form-group">
 																								<label>cid:</label>
-																								<input type="text" value="<?php echo $cidPaciente; ?>" class="form-control" name="cid_paciente">
+																								<input type="text" value="<?php echo $cidPaciente; ?>" class="form-control" name="cid_paciente" disabled>
 																							</div>
 
 																						</div>
@@ -692,7 +716,7 @@ include_once('./db/db-conection.php');
 																						<div class="col-lg-4 col-md-6 col-sm-6 col-12">
 																							<div class="form-group">
 																								<label>Diagnóstico Fisioterapêutico:</label>
-																								<textarea class="form-control" rows="2" name="diag_fisio_paciente"><?php echo $diagFisioPaciente; ?></textarea>
+																								<textarea class="form-control" rows="2" name="diag_fisio_paciente" disabled><?php echo $diagFisioPaciente; ?></textarea>
 																							</div>
 
 																						</div>
@@ -702,21 +726,21 @@ include_once('./db/db-conection.php');
 																						<div class="col-lg-4 col-md-6 col-sm-6 col-12">
 																							<div class="form-group">
 																								<label>Queixa do Paciente :</label>
-																								<textarea class="form-control" rows="2" name="queixa_paciente"><?php echo $queixaPaciente; ?></textarea>
+																								<textarea class="form-control" rows="2" name="queixa_paciente" disabled><?php echo $queixaPaciente; ?></textarea>
 																							</div>
 
 																						</div>
 																						<div class="col-lg-4 col-md-6 col-sm-6 col-12">
 																							<div class="form-group">
 																								<label>HMA :</label>
-																								<textarea class="form-control" rows="2" name="hma_paciente"><?php echo $hmaPaciente; ?></textarea>
+																								<textarea class="form-control" rows="2" name="hma_paciente" disabled><?php echo $hmaPaciente; ?></textarea>
 																							</div>
 
 																						</div>
 																						<div class="col-lg-4 col-md-6 col-sm-6 col-12">
 																							<div class="form-group">
 																								<label>Tratamento Realizado :</label>
-																								<textarea class="form-control" rows="2" name="trata_realizado_paciente"><?php echo $tramRealizadoPaciente; ?></textarea>
+																								<textarea class="form-control" rows="2" name="trata_realizado_paciente" disabled><?php echo $tramRealizadoPaciente; ?></textarea>
 																							</div>
 
 																						</div>
@@ -731,7 +755,7 @@ include_once('./db/db-conection.php');
 
 																								//*MOSTRAR TODOS OS ESTADOS QUE O PACIENTE NÃO ESTA
 
-																								$queryEstado = "SELECT * FROM estado_paciente order by cod_estado limit 7";
+																								$queryEstado = "SELECT * FROM estado_paciente order by cod_estado ";
 																								$resultEstado = mysqli_query($mysqli, $queryEstado);
 
 																								//*Para mostra todos os estados cadastrados																						
@@ -758,7 +782,7 @@ include_once('./db/db-conection.php');
 																								?>
 
 																									<div class="form-check form-check-inline" style="margin-left: 10px;">
-																										<input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="<?php echo $codEstado; ?>" name="estado_paciente[]" <?= $select; ?>>
+																										<input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="<?php echo $codEstado; ?>" name="estado_paciente[]" <?= $select; ?> disabled>
 																										<label class="form-check-label" for="inlineCheckbox1 "><?php echo $nomeEstado; ?> </label>
 																									</div>
 
@@ -770,35 +794,277 @@ include_once('./db/db-conection.php');
 
 
 																					<div class="row">
-
-
 																						<div class="col-lg-4 col-md-6 col-sm-6 col-12">
 																							<div class="form-group">
-																								<label >Exames :</label>
-																								<textarea class="form-control" rows="1" id="desc_exame" name="desc_exame_paciente"><?php echo $examePaciente; ?></textarea>
+																								<label>Exames :</label>
+																								<textarea class="form-control" rows="1" id="desc_exame" name="desc_exame_paciente" disabled><?php echo $examePaciente; ?></textarea>
 																							</div>
 																						</div>
 
 																						<div class="col-lg-4 col-md-6 col-sm-6 col-12">
 																							<div class="form-group">
-																								<label >Medicamentos :</label>
-																								<textarea class="form-control" rows="1" name="desc_medicamento_paciente" id="desc_medicamento_paciente"> <?php echo $medPaciente; ?></textarea>
+																								<label>Medicamentos :</label>
+																								<textarea class="form-control" rows="1" name="desc_medicamento_paciente" id="desc_medicamento_paciente" disabled> <?php echo $medPaciente; ?></textarea>
 																							</div>
 
 																						</div>
 
 																						<div class="col-lg-4 col-md-6 col-sm-6 col-12">
 																							<div class="form-group">
-																								<label >Cirurgias :</label>
-																								<textarea class="form-control" rows="1" name="desc_cirurgia_paciente" id="desc_cirurgia_paciente"><?php echo $cirurgiaPaciente; ?></textarea>
+																								<label>Cirurgias :</label>
+																								<textarea class="form-control" rows="1" name="desc_cirurgia_paciente" id="desc_cirurgia_paciente" disabled><?php echo $cirurgiaPaciente; ?></textarea>
 																							</div>
 
 																						</div>
 
 																					</div>
 
+																					<div class="row">
+																						<div class="col-lg-12 col-md-6 col-sm-6 col-12">
+																							<label style="font-weight: bold;">Inspeção/Palpação :</label>
+																							<div class="form-group">
+
+																								<?php
+
+																								//*MOSTRAR TODOS OS ESTADOS QUE O PACIENTE NÃO ESTA
+																								$queryInspecao = "SELECT * FROM inspecao order by cod_inspecao ";
+																								$resultInspecao = mysqli_query($mysqli, $queryInspecao);
+
+																								//*Para mostra todos os estados cadastrados																						
+
+																								while ($row_inspecao = mysqli_fetch_array($resultInspecao)) {
+
+																									$codInspencao = $row_inspecao['cod_inspecao'];
+																									$nomeinspecao = $row_inspecao['nome_inspecao'];
 
 
+
+
+																									//* Buscar somente os estado que esta cadastrado na tabela tipo_inspecao_paciente, se encontrar algum marca se não não marca
+																									$querySelecInspecaoP = "SELECT * FROM tipo_inspecao ti join avaliacao_paciente ap on ap.cod_avaliacao = ti.ordem_avaliacao join inspecao i on i.cod_inspecao = ti.ordem_inspecao where ordem_inspecao = '$codInspencao' and ordem_avaliacao = '$codAv'";
+																									$result_inspecaoP = mysqli_query($mysqli, $querySelecInspecaoP);
+
+																									if (mysqli_affected_rows($mysqli) > 0) {
+
+																										$select = "checked";
+																									} else {
+																										$select = "";
+																									}
+
+																								?>
+
+																									<div class="form-check form-check-inline" style="margin-left: 10px;">
+																										<input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="<?php echo $codInspencao; ?>" name="inspecao_paciente[]" <?= $select; ?> disabled>
+																										<label class="form-check-label" for="inlineCheckbox1 "><?php echo $nomeinspecao; ?> </label>
+																									</div>
+
+																								<?php } ?>
+																							</div>
+
+																						</div>
+																					</div>
+
+																					<div class="row">
+																						<div class="col-lg-12 col-md-6 col-sm-6 col-12">
+																							<label style="font-weight: bold;">intensidade da Dor :</label>
+																							<div class="form-group">
+																								<img src="assets/img/EVA-2.png" alt="EVA" style="width: 100%;">
+																							</div>
+
+																						</div>
+																						<div class="col-lg-12 col-md-6 col-sm-6 col-12">
+																							<div class="form-group">
+																								<?php
+
+
+																								$grau = "";
+																								for ($i = 0; $i < 11; $i++) {
+
+																									// if($i > 0 and $i <= 2){
+																									// 	$grau = "Dor Leve";
+
+																									// }
+																									// if($i > 2 and $i <= 7){
+																									// 	$grau = "Dor Moderada";
+																									// }
+																									//  if($i > 7 and $i <= 10){
+																									// 	$grau = "Dor Intensa";
+																									// }
+
+																									if ($eva_paciente == $i) {
+																										$select = "checked";
+																									} else {
+																										$select = "";
+																									}
+
+
+
+																								?>
+
+																									<div class="form-check form-check-inline" style="margin-left: 14px; margin-right:28px; top:-20px; position:relative;">
+																										<input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="<?php echo $i; ?>" name="eva_paciente" <?php echo $select; ?> disabled>
+																										<label class="form-check-label" for="inlineCheckbox1 "><?php echo $i; ?> </label>
+																									</div>
+
+
+																								<?php     }    ?>
+
+																							</div>
+
+																						</div>
+																					</div>
+
+																					<hr>
+																					<div class="row mb-3">
+																						<div class="col-lg-12 col-md-12 col-sm-12 col-12">
+																							<h4 class="card card-title p-2">Plano Terapêutico:</h4>
+																						</div>
+																					</div>
+
+																					<div class="row">
+																						<div class="col-lg-12 col-md-6 col-sm-6 col-12">
+																							<label style="font-weight: bold;">Classificação do paciente :</label>
+																							<div class="form-group">
+
+																								<?php
+
+																								//*MOSTRAR CLASSIFICAÇÃO DO PACIENTE
+																								$queryClassificao = "SELECT * FROM classificacao_paciente order by cod_classificacao ";
+																								$resultClassificacao = mysqli_query($mysqli, $queryClassificao);
+
+																								//*Para mostra todos os estados cadastrados																						
+
+																								while ($row_classificao = mysqli_fetch_array($resultClassificacao)) {
+
+																									$codClassificacao = $row_classificao['cod_classificacao'];
+																									$nomeClassificacao = $row_classificao['nome_classificacao'];
+
+
+
+
+																									//* Buscar somente as classificacao que esta cadastrado na tabela tipo_classificao_paciente, se encontrar algum marca se não não marca
+																									$queryClassificao = "SELECT * FROM tipo_classificacao_paciente tcpp join avaliacao_paciente ap on ap.cod_avaliacao = tcpp.ordem_avaliacao  where ordem_classificacao = '$codClassificacao' and ordem_avaliacao = '$codAv'";
+																									$result_classificao = mysqli_query($mysqli, $queryClassificao);
+
+																									if (mysqli_affected_rows($mysqli) > 0) {
+
+																										$select = "checked";
+																									} else {
+																										$select = "";
+																									}
+
+																								?>
+
+																									<div class="form-check form-check-inline" style="margin-left: 10px;">
+																										<input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="<?php echo $codClassificacao; ?>" name="classificacao_paciente[]" <?= $select; ?> disabled>
+																										<label class="form-check-label" for="inlineCheckbox1 "><?php echo $nomeClassificacao; ?> </label>
+																									</div>
+
+																								<?php } ?>
+																							</div>
+
+																						</div>
+																					</div>
+
+																					<div class="row">
+																						<div class="col-lg-12 col-md-6 col-sm-6 col-12">
+																							<label style="font-weight: bold;">Tratamentos :</label>
+																							<div class="form-group">
+
+																								<?php
+
+																								//*MOSTRAR tratamento DO PACIENTE
+																								$queryTratamento = "SELECT * FROM tratamento_paciente order by cod_tratamento ";
+																								$resultTratamento = mysqli_query($mysqli, $queryTratamento);
+
+																								//*Para mostra todos os estados cadastrados																						
+
+																								while ($row_tratamento = mysqli_fetch_array($resultTratamento)) {
+
+																									$codTratamento = $row_tratamento['cod_tratamento'];
+																									$nomeTratamento = $row_tratamento['nome_tratamento'];
+
+
+
+
+																									//* Buscar somente as tratamento que esta cadastrado na tabela tipo_classificao_paciente, se encontrar algum marca se não não marca
+																									$queryTratamento = "SELECT * FROM tipo_tratamento_paciente ttp join avaliacao_paciente ap on ap.cod_avaliacao = ttp.ordem_avaliacao  where ordem_tratamento = '$codTratamento' and ordem_avaliacao = '$codAv'";
+																									$result_Tratamento = mysqli_query($mysqli, $queryTratamento);
+
+																									if (mysqli_affected_rows($mysqli) > 0) {
+
+																										$select = "checked";
+																									} else {
+																										$select = "";
+																									}
+
+																								?>
+
+																									<div class="form-check form-check-inline" style="margin-left: 10px;">
+																										<input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="<?php echo $codTratamento; ?>" name="tratamento_paciente[]" <?= $select; ?> disabled>
+																										<label class="form-check-label" for="inlineCheckbox1 "><?php echo $nomeTratamento; ?> </label>
+																									</div>
+
+																								<?php } ?>
+																							</div>
+
+																						</div>
+																					</div>
+
+																					<div class="row">
+																						<div class="col-lg-12 col-md-6 col-sm-6 col-12">
+																							<label style="font-weight: bold;">Recursos Terapêuticos :</label>
+																							<div class="form-group">
+
+																								<?php
+
+																								//*MOSTRAR Recursos Terapêuticos DO PACIENTE
+																								$queryRecursoTratamento = "SELECT * FROM recurso_tratamento order by cod_recurso ";
+																								$resultRecursoTratamento = mysqli_query($mysqli, $queryRecursoTratamento);
+
+																								//*Para mostra todos os estados cadastrados																						
+
+																								while ($row_recurso_tratamento = mysqli_fetch_array($resultRecursoTratamento)) {
+
+																									$codRecursoTratamento = $row_recurso_tratamento['cod_recurso'];
+																									$nomeRecursoTratamento = $row_recurso_tratamento['nome_recurso'];
+
+
+
+
+																									//* Buscar somente as classificacao que esta cadastrado na tabela tipo_classificao_paciente, se encontrar algum marca se não não marca
+																									$queryRecursoTratamento = "SELECT * FROM tipo_recurso_tratamento tcpp join avaliacao_paciente ap on ap.cod_avaliacao = tcpp.ordem_avaliacao  where ordem_recurso = '$codRecursoTratamento' and ordem_avaliacao = '$codAv'";
+																									$result_recursoTratamento = mysqli_query($mysqli, $queryRecursoTratamento);
+
+																									if (mysqli_affected_rows($mysqli) > 0) {
+
+																										$select = "checked";
+																									} else {
+																										$select = "";
+																									}
+
+																								?>
+
+																									<div class="form-check form-check-inline" style="margin-left: 10px;">
+																										<input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="<?php echo $codRecursoTratamento; ?>" name="recurso_paciente[]" <?= $select; ?> disabled>
+																										<label class="form-check-label" for="inlineCheckbox1 "><?php echo $nomeRecursoTratamento; ?> </label>
+																									</div>
+
+																								<?php } ?>
+																							</div>
+
+																						</div>
+																					</div>
+
+
+																					<div class="row" style="display: none;">
+																						<div class="col-lg-12 col-md-12 col-sm-12 col-12">
+																							<div class="form-group text-center custom-mt-form-group">
+																								<button class="btn btn-primary mr-2  btn_edit_avaliacao" type="button" >Salvar alterações</button>
+																								<!-- <button class="btn btn-secondary" type="reset">Cancelar</button> -->
+																							</div>
+																						</div>
+																					</div>
 
 
 																				</form>
@@ -1241,6 +1507,10 @@ include_once('./db/db-conection.php');
 
 	<!-- SCRIPT PARA CASDATRA NOVA AVALIAÇÃO DO PACIENTE  -->
 	<script src="assets/js/cadastro-av-paciente.js"></script>
+    
+	<!-- EDITAR AVALIAÇÃO DO PACIENTE -->
+	<script src="assets/js/editar-avaliacao.js"></script>
+
 
 
 
@@ -1255,11 +1525,11 @@ include_once('./db/db-conection.php');
 				<div class="modal-body">
 					<form id="form">
 
-						<div class="row">
+						<div class="row" >
 							<div class="col-lg-4 col-md-6 col-sm-6 col-12">
 								<div class="form-group">
-									<label>Cod paciente :</label>
-									<input class="form-control" rows="1" id="codPaciente" name="cod_paciente" />
+									
+									<input type="hidden" class="form-control" rows="1" id="codPaciente" name="cod_paciente" />
 								</div>
 							</div>
 						</div>
@@ -1372,8 +1642,6 @@ include_once('./db/db-conection.php');
 						</div>
 
 						<div class="row">
-
-
 							<div class="col-lg-4 col-md-6 col-sm-6 col-12">
 								<div class="form-group">
 									<label>Exames :</label>

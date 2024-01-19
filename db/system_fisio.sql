@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 04/01/2024 às 03:49
+-- Tempo de geração: 18/01/2024 às 17:41
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.0.30
 
@@ -77,6 +77,9 @@ CREATE TABLE `avaliacao_paciente` (
   `cod_avaliacao` int(11) NOT NULL,
   `ordem_paciente` int(11) DEFAULT NULL,
   `ordem_profissional` int(11) DEFAULT NULL,
+  `diag_medico_paciente` text DEFAULT NULL,
+  `cid_paciente` char(5) DEFAULT NULL,
+  `diag_fisio_paciente` text DEFAULT NULL,
   `qp_paciente` text DEFAULT NULL,
   `hma_paciente` text DEFAULT NULL,
   `tratamento_realizado` text DEFAULT NULL,
@@ -87,13 +90,6 @@ CREATE TABLE `avaliacao_paciente` (
   `data_cad_avaliacao` date DEFAULT NULL,
   `data_atualizacao_av` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
---
--- Despejando dados para a tabela `avaliacao_paciente`
---
-
-INSERT INTO `avaliacao_paciente` (`cod_avaliacao`, `ordem_paciente`, `ordem_profissional`, `qp_paciente`, `hma_paciente`, `tratamento_realizado`, `exames`, `medicamentos`, `cirurgia`, `eva_paciente`, `data_cad_avaliacao`, `data_atualizacao_av`) VALUES
-(88, 94, 1, '', '', '', '', '', '', 0, '2024-01-02', '0000-00-00');
 
 -- --------------------------------------------------------
 
@@ -297,19 +293,9 @@ CREATE TABLE `pacientes` (
   `profissao_paciente` varchar(50) DEFAULT NULL,
   `sus_paciente` int(15) UNSIGNED DEFAULT NULL,
   `etnia_paciente` varchar(45) DEFAULT NULL,
-  `diag_medico_paciente` text DEFAULT NULL,
-  `cid_paciente` char(5) DEFAULT NULL,
-  `diag_fisio_paciente` text DEFAULT NULL,
   `data_cad_paciente` date DEFAULT NULL,
   `data_atualizacao` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
---
--- Despejando dados para a tabela `pacientes`
---
-
-INSERT INTO `pacientes` (`cod_paciente`, `nome_paciente`, `sexo_paciente`, `cpf_paciente`, `data_nasc_paciente`, `telefone_paciente`, `rua_paciente`, `bairro_paciente`, `profissao_paciente`, `sus_paciente`, `etnia_paciente`, `diag_medico_paciente`, `cid_paciente`, `diag_fisio_paciente`, `data_cad_paciente`, `data_atualizacao`) VALUES
-(94, 'Leandro Braga', 'M', '899.993.939-39', '1996-06-12', '(97) 98432-4535', 'Antonio Medeiros 83', 'Bairro da Fonte', 'Agricultor', 3334478888, 'Banawá Yafi', ' ', '', '', '2024-01-02', '0000-00-00');
 
 -- --------------------------------------------------------
 
@@ -696,25 +682,25 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de tabela `agendamento_paciente`
 --
 ALTER TABLE `agendamento_paciente`
-  MODIFY `cod_agendamento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=118;
+  MODIFY `cod_agendamento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=124;
 
 --
 -- AUTO_INCREMENT de tabela `atendimento_paciente`
 --
 ALTER TABLE `atendimento_paciente`
-  MODIFY `cod_atendimento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=100;
+  MODIFY `cod_atendimento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=107;
 
 --
 -- AUTO_INCREMENT de tabela `avaliacao_atendimento`
 --
 ALTER TABLE `avaliacao_atendimento`
-  MODIFY `cod_av_atendimento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `cod_av_atendimento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de tabela `avaliacao_paciente`
 --
 ALTER TABLE `avaliacao_paciente`
-  MODIFY `cod_avaliacao` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
+  MODIFY `cod_avaliacao` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=105;
 
 --
 -- AUTO_INCREMENT de tabela `bairros`
@@ -738,7 +724,7 @@ ALTER TABLE `dias_semana`
 -- AUTO_INCREMENT de tabela `dias_semana_paciente`
 --
 ALTER TABLE `dias_semana_paciente`
-  MODIFY `cod_dias_sem_paciente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=362;
+  MODIFY `cod_dias_sem_paciente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=376;
 
 --
 -- AUTO_INCREMENT de tabela `estado_paciente`
@@ -756,7 +742,7 @@ ALTER TABLE `etnia`
 -- AUTO_INCREMENT de tabela `evolucao_paciente`
 --
 ALTER TABLE `evolucao_paciente`
-  MODIFY `cod_evolucao` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `cod_evolucao` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de tabela `inspecao`
@@ -768,7 +754,7 @@ ALTER TABLE `inspecao`
 -- AUTO_INCREMENT de tabela `pacientes`
 --
 ALTER TABLE `pacientes`
-  MODIFY `cod_paciente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=95;
+  MODIFY `cod_paciente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=100;
 
 --
 -- AUTO_INCREMENT de tabela `profissionais`
@@ -792,37 +778,37 @@ ALTER TABLE `situacao_paciente`
 -- AUTO_INCREMENT de tabela `tipo_classificacao_paciente`
 --
 ALTER TABLE `tipo_classificacao_paciente`
-  MODIFY `cod_tipo_classificacao` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `cod_tipo_classificacao` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
 
 --
 -- AUTO_INCREMENT de tabela `tipo_estado_paciente`
 --
 ALTER TABLE `tipo_estado_paciente`
-  MODIFY `cod_situacao` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
+  MODIFY `cod_situacao` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
 
 --
 -- AUTO_INCREMENT de tabela `tipo_inspecao`
 --
 ALTER TABLE `tipo_inspecao`
-  MODIFY `cod_tipo_inspecao` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
+  MODIFY `cod_tipo_inspecao` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
 
 --
 -- AUTO_INCREMENT de tabela `tipo_recurso_tratamento`
 --
 ALTER TABLE `tipo_recurso_tratamento`
-  MODIFY `cod_tipo_recurso` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=210;
+  MODIFY `cod_tipo_recurso` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=226;
 
 --
 -- AUTO_INCREMENT de tabela `tipo_situacao_paciente`
 --
 ALTER TABLE `tipo_situacao_paciente`
-  MODIFY `cod_tipo_situacao` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=213;
+  MODIFY `cod_tipo_situacao` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=216;
 
 --
 -- AUTO_INCREMENT de tabela `tipo_tratamento_paciente`
 --
 ALTER TABLE `tipo_tratamento_paciente`
-  MODIFY `cod_tipo_tratamento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=94;
+  MODIFY `cod_tipo_tratamento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=106;
 
 --
 -- AUTO_INCREMENT de tabela `tratamento_paciente`
@@ -906,15 +892,15 @@ ALTER TABLE `tipo_inspecao`
 -- Restrições para tabelas `tipo_recurso_tratamento`
 --
 ALTER TABLE `tipo_recurso_tratamento`
-  ADD CONSTRAINT `ordem_avaliacao` FOREIGN KEY (`ordem_avaliacao`) REFERENCES `avaliacao_paciente` (`cod_avaliacao`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `ordem_recurso` FOREIGN KEY (`ordem_recurso`) REFERENCES `recurso_tratamento` (`cod_recurso`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `ordem_recurso` FOREIGN KEY (`ordem_recurso`) REFERENCES `recurso_tratamento` (`cod_recurso`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `tipo_recurso_tratamento_ibfk_1` FOREIGN KEY (`ordem_avaliacao`) REFERENCES `avaliacao_paciente` (`cod_avaliacao`);
 
 --
 -- Restrições para tabelas `tipo_situacao_paciente`
 --
 ALTER TABLE `tipo_situacao_paciente`
-  ADD CONSTRAINT `tipo_situacao_paciente_ibfk_1` FOREIGN KEY (`ordem_paciente`) REFERENCES `pacientes` (`cod_paciente`),
-  ADD CONSTRAINT `tipo_situacao_paciente_ibfk_2` FOREIGN KEY (`ordem_situacao`) REFERENCES `situacao_paciente` (`cod_situacao`);
+  ADD CONSTRAINT `tipo_situacao_paciente_ibfk_2` FOREIGN KEY (`ordem_situacao`) REFERENCES `situacao_paciente` (`cod_situacao`),
+  ADD CONSTRAINT `tipo_situacao_paciente_ibfk_3` FOREIGN KEY (`ordem_paciente`) REFERENCES `pacientes` (`cod_paciente`);
 
 --
 -- Restrições para tabelas `tipo_tratamento_paciente`
