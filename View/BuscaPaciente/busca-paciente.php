@@ -14,7 +14,7 @@ $busca = isset($_POST['palavra']) ? $_POST['palavra'] : null;
 if (isset($busca)) {
 
     //Pesquisar no banco de dados O nome referente a palavra digitada pelo usuário
-    $queryPaciente = "SELECT * FROM pacientes WHERE  nome_paciente like '%$busca%'  ORDER BY cod_paciente DESC  limit 1";
+    $queryPaciente = "SELECT * FROM pacientes  WHERE  nome_paciente like '$busca%'  ORDER BY cod_paciente DESC  limit 1";
     $resultado_paciente = mysqli_query($mysqli, $queryPaciente);
 
     if (mysqli_num_rows($resultado_paciente) <= 0) { ?>
@@ -93,25 +93,59 @@ if (isset($busca)) {
             </div>
         </div>
 
+        <div class="row proc_principal">
+            <div class="col-lg-12 col-md-6 col-sm-6 col-3">
+                <div class="form-group">
+                    <label>Procedimento:<span class="text-danger" id="alert_procedimento">*</span></label>
+                    <select class="form-control select" name="procedimento" id="procedimento">
+                        <option selected value="" id="proce_cad">Selecione o procedimento</option>
+                        <?php
+
+                        $querySelectProcedimento = "SELECT * FROM recurso_tratamento";
+                        $resultQueryProcediemnto = mysqli_query($mysqli, $querySelectProcedimento);
+
+                        while ($row_result_procediemnto = mysqli_fetch_array($resultQueryProcediemnto)) {
+                            $cod_recurso = $row_result_procediemnto['cod_recurso'];
+                            $nome_recurso = $row_result_procediemnto['nome_recurso'];
+
+                        ?>
+                            <option value="<?php echo $cod_recurso ?>"><?php echo $nome_recurso; ?></option>
+
+                        <?php
+
+                        }
+
+                        ?>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+
+
 
 
 
 
     <?php
     } else {
+
+        //* PEGANDO DADOS DO PACIENTE PARA DIZER SE ELE É CADASTRADO 
         while ($rows = mysqli_fetch_assoc($resultado_paciente)) {
             $codPaciente = $rows['cod_paciente'];
             $nomePaciente = $rows['nome_paciente'];
             $sexoPaciente =  $rows['sexo_paciente'];
         } ?>
 
+
+
         <div class="row" style="display: none;">
             <div class="col-lg-6 col-md-6 col-sm-6 col-12">
-                <div class="form-group">                  
-                    <input class="form-control" type="hidden" name="cod_paciente" value="<?php  echo $codPaciente; ?>" >
+                <div class="form-group">
+                    <input class="form-control" type="hidden" name="cod_paciente" value="<?php echo $codPaciente; ?>">
                 </div>
             </div>
-           
+
         </div>
 
         <div class="row mb-3 ">
@@ -120,8 +154,71 @@ if (isset($busca)) {
             </div>
         </div>
 
+        <?php
+        //* PEGAR O PROCEDIMENTO SE PACIENTE ESTIVER  
+
+
+
+
+        $queryAvaliacao = "SELECT * FROM avaliacao_paciente av join tipo_recurso_tratamento trt on trt.ordem_avaliacao = av.cod_avaliacao join  recurso_tratamento rt on rt.cod_recurso = trt.ordem_recurso WHERE av.ordem_paciente = '$codPaciente' order by av.cod_avaliacao desc limit 1 ";
+        $queryResult = $mysqli->query($queryAvaliacao);
+        if (mysqli_num_rows($resultado_paciente) > 0) {
+
+           
+            $rows_recurso = mysqli_fetch_assoc($queryResult);
+
+            $nomeRecurso = $rows_recurso['nome_recurso'];
+            $codRecurso = $rows_recurso['cod_recurso'];
+
+
+
+            // echo $nomeRecurso;
+        ?>
+
+            <!-- //* COLOCAR NO SELECT DO PROCEDIMENTO O PROCEDIEMNTO QUE ELE ESTA CADASTRADO , FEZ NA AVALIAÇÃO  -->
+
+           
+
+            <div class="row">
+                <div class="col-lg-12 col-md-6 col-sm-6 col-3">
+                    <div class="form-group">
+                        <label>Procedimento:<span class="text-danger" id="alert_procedimento">*</span></label>
+                        <select class="form-control select" name="procedimento" id="procedimento">
+                            <option selected value="<?= $codRecurso ?>" id="proce_cad"><?= $nomeRecurso; ?></option>
+                            <?php
+
+                            $querySelectProcedimento = "SELECT * FROM recurso_tratamento";
+                            $resultQueryProcediemnto = mysqli_query($mysqli, $querySelectProcedimento);
+
+                            while ($row_result_procediemnto = mysqli_fetch_array($resultQueryProcediemnto)) {
+                                $cod_recurso = $row_result_procediemnto['cod_recurso'];
+                                $nome_recurso = $row_result_procediemnto['nome_recurso'];
+
+                            ?>
+                                <option value="<?php echo $cod_recurso ?>"><?php echo $nome_recurso; ?></option>
+
+                            <?php
+
+                            }
+
+                            ?>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+        <?php  }
+
+        ?>
+
+
 
 <?php
+
     }
 }
 

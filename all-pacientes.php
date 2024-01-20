@@ -254,61 +254,67 @@ include_once('./db/db-conection.php');
 				</div>
 
 				<div class="content-page">
+
+				<form action="" method="post">
 					<div class="row filter-row">
-						<div class="col-sm-6 col-md-3">
-							<div class="form-group form-focus">
-								<input type="text" class="form-control floating" />
-								<label class="focus-label">Nome do paciente</label>
+
+
+							<div class="col-sm-6 col-md-3">
+								<div class="form-group form-focus">
+									<input type="text" class="form-control floating" />
+									<label class="focus-label">Nome do paciente</label>
+								</div>
 							</div>
-						</div>
-						<div class="col-sm-6 col-md-3">
-							<div class="form-group form-focus select-focus">
-								<select class="select form-control" value="" name="idadePaciente">
-									<option value=""></option>
-									<option value="Crianca">Criança de 0 a 11 Anos</option>
-									<option value="Adolecente">Adolecente 12 a 18 Anos</option>
-									<option value="Adulto">Adulto 19 a 59 Anos</option>
-									<option value="Idoso">Idoso 60 a 75 Anos</option>
+							<div class="col-sm-6 col-md-3">
+								<div class="form-group form-focus select-focus">
+									<select class="select form-control" value="" name="idadePaciente">
+										<option value=""></option>
+										<option value="Crianca">Criança de 0 a 11 Anos</option>
+										<option value="Adolecente">Adolecente 12 a 18 Anos</option>
+										<option value="Adulto">Adulto 19 a 59 Anos</option>
+										<option value="Idoso">Idoso 60 a 75 Anos</option>
 
-								</select>
-								<label class="focus-label">Idade do Paciente</label>
+									</select>
+									<label class="focus-label">Idade do Paciente</label>
+								</div>
 							</div>
-						</div>
 
-						<div class="col-sm-6 col-md-3">
-							<div class="form-group form-focus select-focus">
-								<select class="select form-control" value="" name="situacaoPaciente">
-									<option value=""></option>
-									<?php
-									// BUCAR situação dopaciente
-									$querySelectSitPac = "SELECT * FROM situacao_paciente";
-									$resultQuerySitPac = mysqli_query($mysqli, $querySelectSitPac);
+							<div class="col-sm-6 col-md-3">
+								<div class="form-group form-focus select-focus">
+									<select class="select form-control" value="" name="situacaoPaciente">
+										<option value=""></option>
+										<?php
+										// BUCAR situação dopaciente
+										$querySelectSitPac = "SELECT * FROM situacao_paciente";
+										$resultQuerySitPac = mysqli_query($mysqli, $querySelectSitPac);
 
-									while ($row_result_sit_Pac = mysqli_fetch_array($resultQuerySitPac)) {
-										$cod_situacao_paciente = $row_result_sit_Pac['cod_situacao'];
-										$nome_situacao_paciente = $row_result_sit_Pac['nome_situacao'];
-
+										while ($row_result_sit_Pac = mysqli_fetch_array($resultQuerySitPac)) {
+											$cod_situacao_paciente = $row_result_sit_Pac['cod_situacao'];
+											$nome_situacao_paciente = $row_result_sit_Pac['nome_situacao'];
 
 
-									?>
-										<option value="<?php echo $cod_situacao_paciente ?>"><?php echo $nome_situacao_paciente; ?></option>
 
-									<?php
+										?>
+											<option value="<?php echo $cod_situacao_paciente ?>"><?php echo $nome_situacao_paciente; ?></option>
 
-									}
+										<?php
 
-									?>
-								</select>
-								<label class="focus-label">Situação do Paciente</label>
+										}
+
+										?>
+									</select>
+									<label class="focus-label">Situação do Paciente</label>
+								</div>
 							</div>
-						</div>
 
-						<div class="col-sm-6 col-md-3">
-							<a href="#" class="btn btn-search rounded btn-block mb-3">
-								Pesquisar
-							</a>
-						</div>
+							<div class="col-sm-6 col-md-3">
+								<buuton type="submit"  class="btn btn-search rounded btn-block mb-3">Buscar</button>
+							</div>
+
+						
+
 					</div>
+					</form>
 
 					<div class="row ">
 						<div class="col-lg-12 mb-3">
@@ -329,9 +335,8 @@ include_once('./db/db-conection.php');
 
 										<?php
 
-										$querySelectPaciente = "SELECT p.cod_paciente, p.nome_paciente, a.cod_avaliacao, p.data_nasc_paciente, p.sexo_paciente FROM 
-										pacientes p join avaliacao_paciente a on a.ordem_paciente = p.cod_paciente  										
-										 ORDER BY cod_avaliacao desc limit 1 ";
+										$querySelectPaciente = "SELECT * FROM 
+										pacientes ORDER BY cod_paciente desc ";
 
 										$queryResultPaciente = $mysqli->query($querySelectPaciente);
 
@@ -342,7 +347,7 @@ include_once('./db/db-conection.php');
 											while ($row_cont_paciente = mysqli_fetch_array($queryResultPaciente)) {
 												$codPaciente = $row_cont_paciente['cod_paciente'];
 												$nomePaciente = $row_cont_paciente['nome_paciente'];
-												$codAvaliacao = $row_cont_paciente['cod_avaliacao'];
+												// $codAvaliacao = $row_cont_paciente['cod_avaliacao'];
 												$sexoPaciente = $row_cont_paciente['sexo_paciente'];
 
 
@@ -402,6 +407,13 @@ include_once('./db/db-conection.php');
 														}  ?></td>
 													<td>
 														<?php
+
+														$queryAv = "SELECT * FROM avaliacao_paciente where ordem_paciente = '$codPaciente'  order by cod_avaliacao desc limit 1";
+														$queryResulrAv = $mysqli->query($queryAv);
+														while ($row_cont_avaliacao = mysqli_fetch_array($queryResulrAv)) {
+															$codAvaliacao = $row_cont_avaliacao['cod_avaliacao'];
+														}
+
 														//*========= BUSCAR OS TIPO DE RESCURSO DO TRATAMENTO O PACIENTE TEM ===
 														$querySelRecurso = "SELECT rt.nome_recurso, trt.cod_tipo_recurso  from tipo_recurso_tratamento trt join recurso_tratamento rt on trt.ordem_recurso = rt.cod_recurso WHERE ordem_avaliacao = '$codAvaliacao'  ORDER BY trt.cod_tipo_recurso desc limit 1 ";
 														$queryResulRecurso = $mysqli->query($querySelRecurso);

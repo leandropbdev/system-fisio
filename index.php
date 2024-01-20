@@ -454,81 +454,81 @@ include_once('./db/db-conection.php');
 									<div class="col-lg-12">
 										<div class="card">
 											<div class="card-header">
-											<?php
+												<?php
 
-date_default_timezone_set('America/Manaus');
-$dia = date('l');
+												date_default_timezone_set('America/Manaus');
+												$dia = date('l');
 
-switch ($dia) {
-	case 'Monday':
-		$diaSemana = 'Segunda-Feira';
-		break;
-	case 'Tuesday':
-		$diaSemana = 'Terça-Feira';
-		break;
-	case 'Wednesday':
-		$diaSemana = 'Quarta-Feira';
-		break;
-	case 'Thursday':
-		$diaSemana = 'Quinta-Feira';
-		break;
-	case 'Friday':
-		$diaSemana = 'Sexta-Feira';
-		break;
-	case 'Saturday':
-		$diaSemana = 'Sábado';
-		break;
-	case 'Sunday':
-		$diaSemana = 'Domingo';
-		break;
-}
+												switch ($dia) {
+													case 'Monday':
+														$diaSemana = 'Segunda-Feira';
+														break;
+													case 'Tuesday':
+														$diaSemana = 'Terça-Feira';
+														break;
+													case 'Wednesday':
+														$diaSemana = 'Quarta-Feira';
+														break;
+													case 'Thursday':
+														$diaSemana = 'Quinta-Feira';
+														break;
+													case 'Friday':
+														$diaSemana = 'Sexta-Feira';
+														break;
+													case 'Saturday':
+														$diaSemana = 'Sábado';
+														break;
+													case 'Sunday':
+														$diaSemana = 'Domingo';
+														break;
+												}
 
-$dia = date('d');
-$mes = date('m');
-$ano = date('Y');
+												$dia = date('d');
+												$mes = date('m');
+												$ano = date('Y');
 
-switch ($mes) {
-	case '01':
-		$mes = 'janairo';
-		break;
-	case '02':
-		$mes = 'fevereiro';
-		break;
-	case '03':
-		$mes = 'março';
-		break;
-	case '04':
-		$mes = 'abril';
-		break;
-	case '05':
-		$mes = 'maio';
-		break;
-	case '06':
-		$mes = 'junho';
-		break;
-	case '07':
-		$mes = 'julho';
-		break;
-	case '08':
-		$mes = 'agosto';
-		break;
-	case '09':
-		$mes = 'setembro';
-		break;
-	case '10':
-		$mes = 'outubro';
-		break;
-	case '11':
-		$mes = 'novembro';
-		break;
-	case '12':
-		$mes = 'dezembro';
-		break;
-}
+												switch ($mes) {
+													case '01':
+														$mes = 'janairo';
+														break;
+													case '02':
+														$mes = 'fevereiro';
+														break;
+													case '03':
+														$mes = 'março';
+														break;
+													case '04':
+														$mes = 'abril';
+														break;
+													case '05':
+														$mes = 'maio';
+														break;
+													case '06':
+														$mes = 'junho';
+														break;
+													case '07':
+														$mes = 'julho';
+														break;
+													case '08':
+														$mes = 'agosto';
+														break;
+													case '09':
+														$mes = 'setembro';
+														break;
+													case '10':
+														$mes = 'outubro';
+														break;
+													case '11':
+														$mes = 'novembro';
+														break;
+													case '12':
+														$mes = 'dezembro';
+														break;
+												}
 
-?>
+												?>
 
-											<h5 class="text-bold card-title text-center"><?php echo $mes;  ?> <?php echo $ano;  ?></h5>
+												<h5 class="text-bold card-title text-center"><?php echo $mes;  ?> <?php echo $ano;  ?></h5>
 											</div>
 
 											<div class="card-body " id="body_table_agem">
@@ -8607,12 +8607,12 @@ switch ($mes) {
 
 						</span>
 
-						<div class="row">
+						<!-- <div class="row proc_principal" >
 							<div class="col-lg-12 col-md-6 col-sm-6 col-3">
 								<div class="form-group">
 									<label>Procedimento:<span class="text-danger" id="alert_procedimento">*</span></label>
 									<select class="form-control select" name="procedimento" id="procedimento">
-										<option selected value="">Selecione o procedimento</option>
+										<option selected value="" id="proce_cad">Selecione o procedimento</option>
 										<?php
 
 										$querySelectProcedimento = "SELECT * FROM recurso_tratamento";
@@ -8633,7 +8633,7 @@ switch ($mes) {
 									</select>
 								</div>
 							</div>
-						</div>
+						</div> -->
 
 						<div class="row">
 							<div class="col-lg-12 col-md-6 col-sm-6 col-12">
@@ -8718,7 +8718,7 @@ switch ($mes) {
 						</div>
 					</div>
 
-					
+
 
 
 					<div id="form_evolucao" style="display:none">

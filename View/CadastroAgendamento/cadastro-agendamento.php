@@ -145,7 +145,7 @@ values(default,'$nomePaciente','$sexoPaciente','$cpfPaciente','$dataNascimento',
 } else { //* PACIENTE JA ÉSTA CADASTRADO, MAIS NÃO AGENDADO
 
 
-    //=====PEGAR O ID DO AGENDAMENTO  =====
+    //*=====PEGAR O ID DO AGENDAMENTO  =====
     $querySelectAgendamento = "SELECT cod_agendamento FROM agendamento_paciente WHERE ordem_paciente = '$cod_paciente'  ORDER BY cod_agendamento desc limit 1";
     $queryResultAgd = $mysqli->query($querySelectAgendamento);
 
@@ -195,7 +195,7 @@ values(default,'$nomePaciente','$sexoPaciente','$cpfPaciente','$dataNascimento',
 
         $msg = "Paciente agendado com sucesso";
     } else {
-        // SE O PACIENTE ESTA AGENANDO, VOU CHECAR NA TABELA dias_semana_paciente  SE JA ESTA CADSATRADO ESSE DIA PARA ESSE PACIENTE, SE NÃO ESTIVER, CADSATRO UM NOVO DIA PARA ELE
+        //* SE O PACIENTE ESTA AGENANDO, VOU CHECAR NA TABELA dias_semana_paciente  SE JA ESTA CADSATRADO ESSE DIA PARA ESSE PACIENTE, SE NÃO ESTIVER, CADSATRO UM NOVO DIA PARA ELE
 
         if (isset($dados['dias_sem'])) {
             foreach ($dados['dias_sem'] as $chave5 => $valor5) {
@@ -220,7 +220,7 @@ values(default,'$nomePaciente','$sexoPaciente','$cpfPaciente','$dataNascimento',
 
                         $msg = "Novo dia da semana adicionado. ";
                     } else {
-                        $msg = "Paciente já esta agendado.";
+                        $msg = "Paciente agendado com sucesso.";
                     }
                 } else {
 
