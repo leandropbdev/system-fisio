@@ -2,6 +2,8 @@
 
 include_once('../../db/db-conection.php');
 
+//* ====== AQUI TROCA O STATU DO AGENDAMENTO DO PACIENTE =============
+
 // dd($_POST);
 
 // function dd($param){
@@ -69,7 +71,7 @@ $query_Result_Aten = $mysqli->query($queryAtendimento);
 
 // if($statusAgendamento == '0'){
 
-    $queryAgendamentoUp = "UPDATE agendamento_paciente SET status = '$statusAgendamento' WHERE cod_agendamento ='$codAgendamento' ";
+    $queryAgendamentoUp = "UPDATE agendamento_paciente SET status = '$statusAgendamento', data_fim_agendamento = now() WHERE cod_agendamento ='$codAgendamento' ";
     $queryResultAgendamentoUp = $mysqli->query($queryAgendamentoUp);
 
 // }else if($statusAgendamento == '1'){

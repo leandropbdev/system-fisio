@@ -48,7 +48,7 @@ function medNao() {
     }
 }
 
-// ==== SE O PACIENTE TEM CIRURGIA  OU NÃO MEDICAMENTO PARA ATIVAR OU DESATIVA O CAMPO DESCRIÇÃO ====
+//* ==== SE O PACIENTE TEM CIRURGIA  OU NÃO MEDICAMENTO PARA ATIVAR OU DESATIVA O CAMPO DESCRIÇÃO ====
 let cirurgiaSim = document.querySelector("#cirurgiaSim");
 let cirurgiaNao = document.querySelector("#cirurgiaNao");
 let desc_cirurgia_paciente = document.querySelector("#desc_cirurgia_paciente");
@@ -72,14 +72,14 @@ function ciruNao() {
 
 
 
-//*----=== Pegando a ação do botão cadastrar ------
+//*----=== Pegando a ação do botão cadastrar  e mandar os dados para a page cadastro-paciente.php------
 
 $(document).ready(function () {
-    $("#btn_cadstro").click(function (e) {
-        //  alert("Ola mundo");
+    $("#btn_cadastro").click(function (e) {
+        // alert("Ola mundo");
 
 
-//*----=== VALIDAÇÃO DOS CAMPOS OBRIGATORIOS ------
+        //*----=== VALIDAÇÃO DOS CAMPOS OBRIGATORIOS ------
         var msg = "";
         let fisio = $("#fisio").val();
         let nome_paciente = $("#nome_paciente").val();
@@ -153,6 +153,7 @@ $(document).ready(function () {
 
             // alert("Ola")
             var form = document.querySelector("#form");
+          
             var formData = new FormData(form);
 
             $.ajax({
@@ -163,15 +164,85 @@ $(document).ready(function () {
                 success: function (mensagem) {
                     $('#mensagem-recuperar').text('');
                     $('#mensagem-recuperar').removeClass()
-                    if (mensagem.trim() == "Cadastro realizado com sucesso") {
-                        //$('#btn-fechar-rec').click();					
-                        // $('#email-recuperar').val('');
-                        // $('#mensagem-recuperar').addClass('text-success')
-                        // $('#mensagem-recuperar').text('Cadastrado com sucesso')
+                    if (mensagem.trim() != "") {
+
+                        Swal.fire({
+                            title: '<span style="font-size:20px">Cadastro realizado </span>',
+                            text: "Deseja realizar a impressão ?",
+                            icon: "success",
+                            showCancelButton: true,
+                            confirmButtonColor: "#3085d6",
+                            cancelButtonColor: "#d33",
+                            cancelButtonText: "Não",
+                            confirmButtonText: "Sim, Desejo Imprimir!"
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                Swal.fire({
+                                    title: "Certo!",
+                                    text: "Impressão sendo gerada.",
+                                    icon: "success",
+                                    showConfirmButton: false,
+                                    timer: 2000,
+                                    timerProgressBar: true,
+                                    didOpen: (toast) => {
+                                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                    }
+                                });
+                                //* Encaminhar o codigo do paciente para a page print-avaliacao-paciente.php para realizar a impressão
+
+
+
+
+
+
+
+
+                                setTimeout(function () {
+                                    //?==== ENVIANDO O CODIGO DO PACIENTE POR METODO GET PARA A PAGE DE IMPRESSÃO ===
+                                    // window.location.href='View/Prints/prints.php?codPaciente='+ mensagem;
+
+                                    //*RESETAR TODOS OS DADOS DO FORMULARIO
+
+                                    form.reset();                           
+
+
+                                    window.open('View/Prints/print-avaliacao-paciente.php?codPaciente=' + mensagem)
+
+                                }, 2000);
+
+
+
+                            } else {
+                                Swal.fire({
+                                    title: "Certo!",
+                                    text: "Já pode cadastrar um novo paciente.",
+                                    icon: "success",
+                                    showConfirmButton: false,
+                                    timer: 2000,
+                                    timerProgressBar: true,
+                                    didOpen: (toast) => {
+                                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                    }
+
+
+                                });
+
+                                setTimeout(function () {
+
+                                    window.location.reload("#")
+                                }, 2000);
+
+                            }
+                        });
+
+
 
 
                         // const Toast = Swal.mixin({
                         //     toast: true,
+                        //     width: '380',
                         //     position: 'top',
                         //     background: '#269e05',
                         //     color: 'white',
@@ -186,35 +257,10 @@ $(document).ready(function () {
 
                         // Toast.fire({
                         //     icon: 'success',
-                        //     color: 'white',
-                        //     title: mensagem
+                        //     title: '<span style="font-size:14px">' + mensagem + '</span>'
                         // })
 
-                        const Toast = Swal.mixin({
-                            toast: true,
-                            width: '380',
-                            position: 'top',
-                            background: '#269e05',
-                            color: 'white',
-                            showConfirmButton: false,
-                            timer: 2000,
-                            timerProgressBar: true,
-                            didOpen: (toast) => {
-                                toast.addEventListener('mouseenter', Swal.stopTimer)
-                                toast.addEventListener('mouseleave', Swal.resumeTimer)
-                            }
-                        })
-            
-                        Toast.fire({
-                            icon: 'success',
-                            title: '<span style="font-size:14px">' + mensagem + '</span>'
-                        })
 
-                        setTimeout(function () {
-
-                            $('#changeoffice').modal('hide')
-                            window.location.reload("#")
-                        }, 2000);
 
 
                     } else {

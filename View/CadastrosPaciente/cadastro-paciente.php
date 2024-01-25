@@ -2,6 +2,8 @@
 
 include_once('../../db/db-conection.php');
 
+// echo "112";
+
 // dd($_POST);
 
 // function dd($param)
@@ -102,7 +104,7 @@ if ($codPaciente == null) {
 
     if (mysqli_affected_rows($mysqli) > 0) {
 
-        //=====PEGAR O ID DA AVALIAÇÃO  =====
+        //*=====PEGAR O ID DA AVALIAÇÃO  =====
         $querySelectAvPaciente = "SELECT cod_avaliacao FROM avaliacao_paciente ORDER BY cod_avaliacao desc limit 1";
         $queryResultAvPac = $mysqli->query($querySelectAvPaciente);
         while ($row_cont_ava_paciente = mysqli_fetch_array($queryResultAvPac)) {
@@ -149,6 +151,6 @@ if ($codPaciente == null) {
             }
         }
 
-        echo "Cadastro realizado com sucesso";
+        echo $codPaciente;
     }
 

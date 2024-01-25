@@ -747,7 +747,7 @@ include_once('./db/db-conection.php');
 												<div class="row">
 													<div class="col-lg-12 col-md-12 col-sm-12 col-12">
 														<div class="form-group text-center custom-mt-form-group">
-															<button class="btn btn-primary mr-2" type="button" id="btn_cadstro">Salvar</button>
+															<button class="btn btn-primary mr-2" type="button" id="btn_cadastro">Salvar</button>
 															<button class="btn btn-secondary" type="reset">Cancelar</button>
 														</div>
 													</div>

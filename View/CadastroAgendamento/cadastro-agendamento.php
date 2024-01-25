@@ -118,7 +118,7 @@ values(default,'$nomePaciente','$sexoPaciente','$cpfPaciente','$dataNascimento',
 
 
             //*CADASTRA A AGENDA = AGENDA O PACIENTE NA TABELA AGENDAMENTO_PACIENTE
-            $querynsertAgendamento = "INSERT INTO agendamento_paciente values(default,'$codPaciente','$profissional','$procedimento','$horario_inicial','$horario_final','1','$observacao', NOW(),'') ";
+            $querynsertAgendamento = "INSERT INTO agendamento_paciente values(default,'$codPaciente','$profissional','$procedimento','$horario_inicial','$horario_final','1','$observacao', NOW(),'','') ";
             $queryResultAgd = $mysqli->query($querynsertAgendamento);
 
             //=====PEGAR O ID DO ULTIMO AGENDAMENTO  =====
@@ -155,7 +155,7 @@ values(default,'$nomePaciente','$sexoPaciente','$cpfPaciente','$dataNascimento',
 
 
         //CADASTRA A AGENDA 
-        $querynsertAgendamento = "INSERT INTO agendamento_paciente values(default,'$cod_paciente','$profissional','$procedimento','$horario_inicial','$horario_final','1','$observacao', NOW(),'')";
+        $querynsertAgendamento = "INSERT INTO agendamento_paciente values(default,'$cod_paciente','$profissional','$procedimento','$horario_inicial','$horario_final','1','$observacao', NOW(),'','')";
         $queryResultAgd = $mysqli->query($querynsertAgendamento);
 
         //=====PEGAR O ID DO AGENDAMENTO  =====
@@ -224,20 +224,20 @@ values(default,'$nomePaciente','$sexoPaciente','$cpfPaciente','$dataNascimento',
                     }
                 } else {
 
-                    // CADASTRAR UM NOVO AGENDAMENTO PARA O PACIENTE QUE JA ESTA AGENDADO, MAIS QUERO FAZER UM NOVO AGENDAMENTO EM DIA OU HORARIO DIFERENTE ==
+                    //* CADASTRAR UM NOVO AGENDAMENTO PARA O PACIENTE QUE JA ESTA AGENDADO, MAIS QUERO FAZER UM NOVO AGENDAMENTO EM DIA OU HORARIO DIFERENTE ==
 
-                    //CADASTRA A AGENDA 
-                    $querynsertAgendamento = "INSERT INTO agendamento_paciente values(default,'$cod_paciente','$profissional','$procedimento','$horario_inicial','$horario_final','1','$observacao', NOW(),'')";
+                    //*CADASTRA A AGENDA 
+                    $querynsertAgendamento = "INSERT INTO agendamento_paciente values(default,'$cod_paciente','$profissional','$procedimento','$horario_inicial','$horario_final','1','$observacao', NOW(),'','')";
                     $queryResultAgd = $mysqli->query($querynsertAgendamento);
 
-                    //=====PEGAR O ID DO AGENDAMENTO  =====
+                    //*=====PEGAR O ID DO AGENDAMENTO  =====
                     $querySelectAgendamento = "SELECT cod_agendamento FROM agendamento_paciente ORDER BY cod_agendamento desc limit 1";
                     $queryResultAgd = $mysqli->query($querySelectAgendamento);
                     while ($row_cont_agendamento = mysqli_fetch_array($queryResultAgd)) {
                         $codAgendamento = $row_cont_agendamento['cod_agendamento'];
                     }
 
-                    // CADASTRA OS DIAS DA SEMANA QUE OPACIENTE ESTA AGENDADO
+                    //*CADASTRA OS DIAS DA SEMANA QUE OPACIENTE ESTA AGENDADO
                     if (isset($dados['dias_sem'])) {
                         foreach ($dados['dias_sem'] as $chave5 => $valor5) {
 

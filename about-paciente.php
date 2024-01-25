@@ -516,7 +516,7 @@ include_once('./db/db-conection.php');
 													<div class="card">
 
 														<div class="card-header">
-															<span class="page-title">Histórico  do paciente</span>
+															<span class="page-title">Histórico do paciente</span>
 															<a href="#" class="btn btn-primary btn-rounded float-right btn_nova_av" codpaciente="<?= $codPacienteForm; ?>" data-toggle="modal" data-target="#add_new_event"><i class="fas fa-plus"></i> Nova avaliação</a>
 														</div>
 
@@ -593,9 +593,19 @@ include_once('./db/db-conection.php');
 																			<div class="tab-pane show  <?= $active; ?>" id="av<?= $codAv ?>">
 
 
-																				<div class="row" style="display:flex; flex-direction:row; justify-content:space-between; margin:0 10px;">
-																					<div >Avaliação <?= $codAv ?></div>
-																					<div class=" ">
+																				<div class="row " >
+																					<div class="col-6">Avaliação <?= $codAv ?></div>																					
+																						
+																						<div class="col-sm-4 col-4 text-right ">
+																							<div class="btn-group btn-group-sm">	
+																																																																					
+																								<a href="View/Prints/print-avaliacao-paciente.php?codPaciente=<?= $codPaciente ?>&codAvaliacao=<?= $codAv  ?>" target="_blank" class="btn btn-white"><i class="fas fa-print fa-lg"></i> Imprimir</a>
+																								
+																							</div>
+																						</div>
+																					
+
+																					<div class="col-2   text-right">
 																						<button type="submit" name="cod-paciente" value="<?php echo $codPaciente; ?>" class="btn btn-primary btn-sm mb-2">
 																							<i class="far fa-edit"></i>
 																						</button>
@@ -687,12 +697,12 @@ include_once('./db/db-conection.php');
 																					</div>
 																					<div class="row">
 																						<div class="col-lg-4">
-																							<input type="hidden" class="form-control" value="<?= $codPaciente ?>"  name="cod_paciente" >
+																							<input type="hidden" class="form-control" value="<?= $codPaciente ?>" name="cod_paciente">
 																						</div>
 																					</div>
 																					<div class="row">
 																						<div class="col-lg-4">
-																							<input type="hidden" class="form-control" value="<?= $codAv ?>"    name="cod_avaliacao" >
+																							<input type="hidden" class="form-control" value="<?= $codAv ?>" name="cod_avaliacao">
 																						</div>
 																					</div>
 
@@ -1060,7 +1070,7 @@ include_once('./db/db-conection.php');
 																					<div class="row" style="display: none;">
 																						<div class="col-lg-12 col-md-12 col-sm-12 col-12">
 																							<div class="form-group text-center custom-mt-form-group">
-																								<button class="btn btn-primary mr-2  btn_edit_avaliacao" type="button" >Salvar alterações</button>
+																								<button class="btn btn-primary mr-2  btn_edit_avaliacao" type="button">Salvar alterações</button>
 																								<!-- <button class="btn btn-secondary" type="reset">Cancelar</button> -->
 																							</div>
 																						</div>
@@ -1507,7 +1517,7 @@ include_once('./db/db-conection.php');
 
 	<!-- SCRIPT PARA CASDATRA NOVA AVALIAÇÃO DO PACIENTE  -->
 	<script src="assets/js/cadastro-av-paciente.js"></script>
-    
+
 	<!-- EDITAR AVALIAÇÃO DO PACIENTE -->
 	<script src="assets/js/editar-avaliacao.js"></script>
 
@@ -1525,10 +1535,10 @@ include_once('./db/db-conection.php');
 				<div class="modal-body">
 					<form id="form">
 
-						<div class="row" >
+						<div class="row">
 							<div class="col-lg-4 col-md-6 col-sm-6 col-12">
 								<div class="form-group">
-									
+
 									<input type="hidden" class="form-control" rows="1" id="codPaciente" name="cod_paciente" />
 								</div>
 							</div>

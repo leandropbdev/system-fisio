@@ -1,0 +1,9 @@
+{
+    "font awesome 5 brands": {
+        "normal": "font_awesome_5_brands_normal_ff43ebedad83f2c66772020b7febca30"
+    },
+    "font awesome 5 free": {
+        "normal": "C:\\xampp\\htdocs\\System Fisio\\vendor\\dompdf\\dompdf\/lib\/fonts\/font_awesome_5_free_normal_1267abac651662254f3fb77acca7f754",
+        "900": "font_awesome_5_free_900_49826276b6b03fc2d816871ab53d4ce4"
+    }
+}

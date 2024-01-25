@@ -76,7 +76,7 @@ $(document).ready(function () {
                 success: function (mensagem) {
                     $('#mensagem-recuperar').text('');
                     $('#mensagem-recuperar').removeClass()
-                    if (mensagem.trim() == "Cadastro realizado com sucesso") {
+                    if (mensagem.trim() != "") {
                         //$('#btn-fechar-rec').click();					
                         // $('#email-recuperar').val('');
                         // $('#mensagem-recuperar').addClass('text-success')
@@ -120,7 +120,7 @@ $(document).ready(function () {
 
                         Toast.fire({
                             icon: 'success',
-                            title: '<span style="font-size:14px">' + mensagem + '</span>'
+                            title: '<span style="font-size:14px">Cadastrado com sucesso</span>'
                         })
 
                         setTimeout(function () {
