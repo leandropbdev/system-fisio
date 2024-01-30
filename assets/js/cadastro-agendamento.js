@@ -1,6 +1,6 @@
 
-//----=== VALIDAÇÃO DOS CAMPOS OBRIGATORIOS ------
-
+//*----=== VALIDAÇÃO DOS CAMPOS OBRIGATORIOS ------
+//* PEGA OS DADOS DO FORMULARIO DE AGENDAMNETO
 $(document).ready(function () {
     $("#btn_cad_agendamento").click(function (e) {
         //   alert("Ola mundo");
@@ -8,10 +8,11 @@ $(document).ready(function () {
 
 
         var msg = "";
-        let fisdias_semanaio = $("#dias_semana").val();
+        // let dias_semana = $("#dias_semana").val();
 
+        let dias_semana = document.getElementsByName("dias_sem")
 
-
+       
 
         let nome_paciente = $("#pesquisa").val();
         let horarioInicio = $("#horario_inicio").val();
@@ -98,7 +99,7 @@ $(document).ready(function () {
         } else {
 
 
-            //====== SCRIPT PARA MANDA OS DADOS PARA A PAGE CADASTRO =====
+            //*====== SCRIPT PARA MANDA OS DADOS PARA A PAGE CADASTRO-AGENDAMENTO.PHP =====
 
             // alert("Ola")
             var form = document.querySelector("#form");

@@ -8602,7 +8602,7 @@ include_once('./db/db-conection.php');
 
 							</div>
 						</div>
-						<!-- //==== MOSTRAR O RESULTADO DA BUSCA == -->
+						<!-- //*==== MOSTRAR O RESULTADO DA BUSCA == -->
 						<span class=" resultado  " id="result_paciente">
 
 						</span>
@@ -8647,6 +8647,7 @@ include_once('./db/db-conection.php');
 
 
 						<div class="submit-section text-center">
+							<!--//todo:: CHAMARÁ SCRIPT QUE ESTA EM ASSETS/JS/CADASTRO-AGENDAMENTO.JS   -->
 							<button class="btn btn-primary  submit-btn" type="button" id="btn_cad_agendamento">Agendar</button>
 						</div>
 					</form>
@@ -8657,7 +8658,7 @@ include_once('./db/db-conection.php');
 
 
 
-	<!-- //DETALHE DO AGENDAMENTO -->
+	<!-- //*DETALHE DO AGENDAMENTO -->
 	<div class="modal custom-modal fade none-border" id="my_event">
 		<div class="modal-dialog modal-dialog-centered modal-sm">
 			<div class="modal-content" style="border-radius:3px;">
@@ -8771,7 +8772,7 @@ include_once('./db/db-conection.php');
 		</div>
 	</div>
 
-	<!-- // ===== EDITAR AGENDAMENTO DO AGENDAMENTO === -->
+	<!-- //* ===== EDITAR AGENDAMENTO DO AGENDAMENTO === -->
 	<div id="edt_agen" class="modal custom-modal fade" role="dialog">
 		<div class="modal-dialog modal-dialog-centered" role="document">
 			<div class="modal-content">
@@ -8921,7 +8922,7 @@ include_once('./db/db-conection.php');
 		</div>
 	</div>
 
-	<!-- ALERT DO DELELTE , SE QUER REALMENTE DELETAR O AGENDAMENTO  -->
+	<!-- //* ALERT DO DELELTE , SE QUER REALMENTE DELETAR O AGENDAMENTO  -->
 	<div class="modal custom-modal fade none-border" id="alert_delete">
 		<div class="modal-dialog modal-dialog-centered modal-sm">
 			<div class="modal-content" style="border-radius:3px;">
@@ -8958,7 +8959,7 @@ include_once('./db/db-conection.php');
 	</div>
 
 
-	<!-- //  ======  MODAL DE EVOLUÇÃO DO PACIENTE  === -->
+	<!-- //*  ======  MODAL DE EVOLUÇÃO DO PACIENTE  === -->
 	<div class="modal custom-modal fade none-border" id="modal_ev_paciente">
 		<div class="modal-dialog modal-dialog-centered modal-sm">
 			<div class="modal-content" style="border-radius:3px;">
@@ -9029,21 +9030,21 @@ include_once('./db/db-conection.php');
 
 
 	<script>
-		// Busca do paceinte 
+		//* Busca do paceinte 
 		$(function() {
-			//Pesquisar os paciente sem refresh na página
+			//?Pesquisar os paciente sem refresh na página
 			$(".pesquisa").keyup(function() {
 				//  alert("Ola mundo");
 
 				var pesquisa = $(this).val();
 
-				//Verificar se há algo digitado
+				//?Verificar se há algo digitado
 				if (pesquisa != '') {
 					var dados = {
 						palavra: pesquisa
 					}
 					$.post('View/BuscaPaciente/busca-paciente.php', dados, function(retorna) {
-						//Mostra dentro da ul os resultado obtidos 
+						//?Mostra dentro da ul os resultado obtidos 
 						$(".resultado").html(retorna);
 					});
 				} else {

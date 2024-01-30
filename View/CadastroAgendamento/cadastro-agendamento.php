@@ -91,7 +91,7 @@ values(default,'$nomePaciente','$sexoPaciente','$cpfPaciente','$dataNascimento',
             $codPaciente = $row_cont_paciente['cod_paciente'];
         }
 
-        //FAZ PARTE DA AVALIAÇÃO =======
+        //? FAZ PARTE DA AVALIAÇÃO =======
 
         $querynsertAvaliacao = "INSERT INTO avaliacao_paciente values(default,'$codPaciente','$profissional','','','','','','','','','','',NOW(), '')";
         $queryResultAv = $mysqli->query($querynsertAvaliacao);
@@ -121,7 +121,7 @@ values(default,'$nomePaciente','$sexoPaciente','$cpfPaciente','$dataNascimento',
             $querynsertAgendamento = "INSERT INTO agendamento_paciente values(default,'$codPaciente','$profissional','$procedimento','$horario_inicial','$horario_final','1','$observacao', NOW(),'','') ";
             $queryResultAgd = $mysqli->query($querynsertAgendamento);
 
-            //=====PEGAR O ID DO ULTIMO AGENDAMENTO  =====
+            //*=====PEGAR O ID DO ULTIMO AGENDAMENTO  =====
             $querySelectAgendamento = "SELECT cod_agendamento FROM agendamento_paciente ORDER BY cod_agendamento desc limit 1";
             $queryResultAgd = $mysqli->query($querySelectAgendamento);
             while ($row_cont_agendamento = mysqli_fetch_array($queryResultAgd)) {
@@ -142,15 +142,15 @@ values(default,'$nomePaciente','$sexoPaciente','$cpfPaciente','$dataNascimento',
             echo "Paciente agendado com sucesso";
         }
     }
-} else { //* PACIENTE JA ÉSTA CADASTRADO, MAIS NÃO AGENDADO
+} else { //todo: PACIENTE JA ÉSTA CADASTRADO, MAIS NÃO AGENDADO
 
 
-    //*=====PEGAR O ID DO AGENDAMENTO  =====
-    $querySelectAgendamento = "SELECT cod_agendamento FROM agendamento_paciente WHERE ordem_paciente = '$cod_paciente'  ORDER BY cod_agendamento desc limit 1";
+    //*==== =PEGAR O ID DO AGENDAMENTO  =====
+    $querySelectAgendamento = "SELECT cod_agendamento FROM agendamento_paciente WHERE ordem_paciente = '$cod_paciente' and status = '1'  ORDER BY cod_agendamento desc limit 1";
     $queryResultAgd = $mysqli->query($querySelectAgendamento);
 
 
-    //  TESTA SE O PACIENTE JA ESTA AGENDANDO E NO STATUS 1 AGENDANDO ===
+    //? TESTA SE O PACIENTE JA ESTA AGENDANDO E NO STATUS 1 AGENDANDO ===
     if (mysqli_affected_rows($mysqli) <= 0) {
 
 
@@ -175,7 +175,7 @@ values(default,'$nomePaciente','$sexoPaciente','$cpfPaciente','$dataNascimento',
         }
 
 
-        //=====PEGAR O ID DA AVALIAÇÃO  =====
+        //*=====PEGAR O ID DA AVALIAÇÃO  =====
         $querySelectAvPaciente = "SELECT cod_avaliacao FROM avaliacao_paciente where ordem_paciente = '$cod_paciente' ORDER BY cod_avaliacao desc limit 1";
         $queryResultAvPac = $mysqli->query($querySelectAvPaciente);
         while ($row_cont_ava_paciente = mysqli_fetch_array($queryResultAvPac)) {
@@ -218,9 +218,9 @@ values(default,'$nomePaciente','$sexoPaciente','$cpfPaciente','$dataNascimento',
                         $querynsertDiaSem = "INSERT INTO dias_semana_paciente values(default,'$codAgendamento','$valor5',NOW())";
                         $queryResultDiaSem = $mysqli->query($querynsertDiaSem);
 
-                        $msg = "Novo dia da semana adicionado. ";
+                        $msg = "Novo dia da semana adicionado. Aqui para novo  horario";
                     } else {
-                        $msg = "Paciente agendado com sucesso.";
+                        $msg = "Novo agendamento realizado.";
                     }
                 } else {
 
